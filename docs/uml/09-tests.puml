@@ -1,0 +1,34 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title BLL.Tests: модульні тести (xUnit)
+package Fakes <<stubs>> {
+  class InMemoryUnitOfWork
+  class "InMemoryRepository<T>" as IMR
+  class FixedClock
+  class FakePasswordHasher
+  class TestData <<static>>
+}
+package Services {
+  class TourServiceTests <<15>>
+  class TourBookingServiceTests <<14>>
+  class RoomBookingServiceTests <<6>>
+  class TicketBookingServiceTests <<3>>
+  class HotelAndTransportServiceTests <<5>>
+  class AuthAndUserServiceTests <<9>>
+}
+package Mapping {
+  class EnumMappingTests <<4>>
+}
+interface IUnitOfWork <<DAL>>
+interface IClock <<BLL>>
+interface IPasswordHasher <<BLL>>
+IUnitOfWork <|.. InMemoryUnitOfWork
+IClock <|.. FixedClock
+IPasswordHasher <|.. FakePasswordHasher
+InMemoryUnitOfWork *-- IMR
+Services ..> TestData
+Services ..> FixedClock
+@enduml

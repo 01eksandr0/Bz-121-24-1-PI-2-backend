@@ -1,0 +1,53 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title PL: TravelAgency.WebAPI
+package Controllers {
+  class AuthController
+  class UsersController <<Admin>>
+  class CountriesController
+  class ToursController
+  class TourBookingsController
+  class RoomBookingsController
+  class TicketBookingsController
+  class HotelsController
+  class TripsController
+}
+package Models {
+  package Requests {
+    class "LoginRequest, RegisterRequest,\nTourRequest, TourSearchQuery,\nBookTourRequest, BookRoomRequest,\nBookTicketRequest, HotelRequest,\nHotelRoomRequest, TripRequest, ..." as Req
+  }
+  package Responses {
+    class "AuthResponse, UserResponse,\nTourResponse, HotelResponse,\nTripResponse, *BookingResponse, ..." as Resp
+  }
+}
+package Mapping {
+  class ApiMapper <<static, internal>>
+}
+package Security {
+  interface IJwtTokenService
+  class JwtTokenService
+  class JwtOptions
+  class ApiRoles <<static>>
+  class ClaimsPrincipalExtensions <<static>>
+}
+package Middleware {
+  class ExceptionHandlingMiddleware {
+    + InvokeAsync(context)
+  }
+}
+class ControllerBase <<ASP.NET Core>>
+interface "I*Service" as IS <<BLL>>
+ControllerBase <|-- Controllers
+Controllers --> IS
+AuthController --> IJwtTokenService
+IJwtTokenService <|.. JwtTokenService
+JwtTokenService ..> JwtOptions
+Controllers ..> ApiMapper
+ApiMapper ..> Req
+ApiMapper ..> Resp
+Controllers ..> ClaimsPrincipalExtensions : User.GetUserId()
+Controllers ..> ApiRoles : [Authorize(Roles)]
+@enduml

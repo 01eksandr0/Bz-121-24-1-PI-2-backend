@@ -1,0 +1,40 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title Бронювання туру (наскрізно через усі шари)
+actor Клієнт
+participant "TourDetailsView\n(Vue)" as V
+participant "api/http.js\n(axios)" as H
+participant "JwtBearer +\n[Authorize]" as J
+participant "TourBookingsController\n(PL)" as C
+participant "TourBookingService\n(BLL)" as S
+participant "EfUnitOfWork /\nEfRepository" as U
+database "MS SQL" as DB
+participant "ExceptionHandling\nMiddleware" as X
+
+Клієнт -> V : кількість осіб, «Забронювати»
+V -> H : tourBookingsApi.book({tourId, persons})
+H -> J : POST /api/tour-bookings\nAuthorization: Bearer <JWT>
+J -> J : перевірка підпису, терміну, ролі
+J -> C : Book(request)
+C -> C : request.ToModel(), User.GetUserId()
+C -> S : Book(userId, BookTourModel)
+S -> U : Users.GetById, Tours.GetById
+U -> DB : SELECT
+S -> S : тур у майбутньому? немає активного бронювання?\nвільних місць ≥ persons?
+alt порушено правило
+  S --> X : BusinessConflictException
+  X --> H : 409 ProblemDetails {detail}
+  H --> V : Error(detail) → ErrorAlert
+else все гаразд
+  S -> U : TourBookings.Add(booking)
+  S -> U : SaveChanges()
+  U -> DB : INSERT
+  S --> C : TourBookingModel
+  C --> H : 201 Created + TourBookingResponse
+  H --> V : дані бронювання
+  V --> Клієнт : «Тур заброньовано...»
+end
+@enduml

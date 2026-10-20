@@ -1,0 +1,82 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title BLL: сервіси, інтерфейси і допоміжні класи
+package Interfaces {
+  interface IAuthService
+  interface IUserService
+  interface IGeographyService
+  interface ITourService {
+    + Search(filter)
+    + GetById(id)
+    + Create(input)
+    + Update(id, input)
+    + Delete(id)
+  }
+  interface ITourBookingService {
+    + Book(userId, model)
+    + GetByUser(userId)
+    + GetAll()
+    + Cancel(bookingId, userId)
+  }
+  interface IHotelService
+  interface IRoomBookingService
+  interface ITransportService
+  interface ITicketBookingService
+}
+package Services {
+  class AuthService
+  class UserService
+  class GeographyService
+  class TourService
+  class TourBookingService
+  class HotelService
+  class RoomBookingService
+  class TransportService
+  class TicketBookingService
+}
+package Internal <<internal>> {
+  class BookingCancellation <<static>>
+  class Guard <<static>>
+  class UserGuard <<static>>
+  class StayPeriod <<static>>
+  class RepositoryExtensions <<static>>
+  class EmailNormalizer <<static>>
+}
+package Common {
+  interface IClock
+  class SystemClock
+  class Pricing <<static>>
+  class BusinessRules <<static>>
+}
+package Security {
+  interface IPasswordHasher
+  class Pbkdf2PasswordHasher
+}
+interface IUnitOfWork <<DAL.Abstractions>>
+IAuthService <|.. AuthService
+IUserService <|.. UserService
+IGeographyService <|.. GeographyService
+ITourService <|.. TourService
+ITourBookingService <|.. TourBookingService
+IHotelService <|.. HotelService
+IRoomBookingService <|.. RoomBookingService
+ITransportService <|.. TransportService
+ITicketBookingService <|.. TicketBookingService
+IClock <|.. SystemClock
+IPasswordHasher <|.. Pbkdf2PasswordHasher
+Services ..> IUnitOfWork
+TourService ..> IClock
+TourBookingService ..> IClock
+AuthService ..> IPasswordHasher
+TourBookingService ..> BookingCancellation
+RoomBookingService ..> BookingCancellation
+TicketBookingService ..> BookingCancellation
+TourBookingService ..> Pricing
+RoomBookingService ..> StayPeriod
+HotelService ..> StayPeriod
+Services ..> Guard
+Services ..> RepositoryExtensions
+@enduml

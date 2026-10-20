@@ -1,0 +1,40 @@
+@startuml
+left to right direction
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+title Ролі користувачів і основні сценарії
+actor "Незареєстрований" as G
+actor "Зареєстрований\n(клієнт)" as C
+actor "Менеджер" as M
+actor "Адміністратор" as A
+C -|> G
+M -|> C
+A -|> M
+rectangle "Туристична агенція" {
+  usecase "Переглядати тури\n(гарячі, екскурсійні, за країною/типом,\nфільтри, пошук, сортування)" as UC1
+  usecase "Переглядати готелі і рейси" as UC2
+  usecase "Зареєструватися / увійти" as UC3
+  usecase "Забронювати тур" as UC4
+  usecase "Забронювати номер у готелі" as UC5
+  usecase "Купити квиток на транспорт" as UC6
+  usecase "Переглянути і скасувати\nсвої бронювання" as UC7
+  usecase "Додавати / змінювати / видаляти тури" as UC8
+  usecase "Вести довідники (країни, регіони,\nготелі, номери, рейси)" as UC9
+  usecase "Переглядати і скасовувати\nбудь-які бронювання" as UC10
+  usecase "Призначати ролі користувачам" as UC11
+}
+G --> UC1
+G --> UC2
+G --> UC3
+C --> UC4
+C --> UC5
+C --> UC6
+C --> UC7
+M --> UC8
+M --> UC9
+M --> UC10
+A --> UC11
+@enduml

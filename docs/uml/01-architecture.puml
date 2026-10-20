@@ -1,0 +1,42 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam componentStyle rectangle
+title Загальна архітектура системи «Туристична агенція»
+actor "Гість / Клієнт /\nМенеджер / Адмін" as U
+rectangle "Браузер" {
+  [TravelAgency.Frontend\nVue 3 + Vue Router + Pinia + Axios] as FE
+}
+rectangle "Сервер застосування (Kestrel)" {
+  package "Представлення (PL)" #ECEFF1 {
+    [TravelAgency.WebAPI\nконтролери, моделі PL, JWT,\nmiddleware винятків] as API
+  }
+  package "Інфраструктура" #FFF8E1 {
+    [TravelAgency.Infrastructure\nAutofac-модулі] as INF
+  }
+  package "Бізнес-логіка (BLL)" #F3E5F5 {
+    [TravelAgency.BLL\n9 сервісів, моделі, mapping,\nвинятки, правила] as BLL
+  }
+  package "Доступ до даних (DAL)" #E3F2FD {
+    [TravelAgency.DAL.Abstractions\nсутності, IRepository<T>, IUnitOfWork] as ABS
+    [TravelAgency.DAL.EF\nEF Core Code First] as EF
+  }
+}
+database "MS SQL Server\nTravelAgencyDb" as DB
+package "Тести" #E8F5E9 {
+  [TravelAgency.BLL.Tests\nxUnit + stub-и] as TST
+}
+U --> FE
+FE --> API : HTTP/JSON\nAuthorization: Bearer JWT
+API --> BLL : I*Service,\nмоделі BLL
+API ..> INF : RegisterModule\n(Program.cs)
+INF ..> BLL
+INF ..> EF
+BLL --> ABS : IUnitOfWork
+EF ..|> ABS
+EF --> DB : ADO.NET / SqlClient
+TST --> BLL
+TST ..> ABS : InMemoryUnitOfWork
+@enduml

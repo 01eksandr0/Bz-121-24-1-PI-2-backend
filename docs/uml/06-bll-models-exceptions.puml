@@ -1,0 +1,59 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title BLL: моделі, mapping і винятки
+package "Models" {
+  class UserModel
+  class RegisterModel
+  class LoginModel
+  class CountryModel
+  class RegionModel
+  class TourModel {
+    FinalPrice, IsHot, FreePlaces, Nights
+  }
+  class TourInputModel
+  class TourFilterModel
+  class TourBookingModel
+  class RoomBookingModel
+  class TicketBookingModel
+  class BookTourModel
+  class BookRoomModel
+  class BookTicketModel
+  class HotelModel
+  class HotelRoomModel
+  class TripModel {
+    FreeSeats
+  }
+  enum Role
+  enum TourKind
+  enum BookingState
+  enum TransportKind
+  enum TourSortOrder
+}
+package Mapping <<internal>> {
+  class EntityMapper <<static>> {
+    + ToModel(entity)
+    + ApplyTo(input, entity)
+  }
+  class EnumMapper <<static>> {
+    + ToModel(enum) / ToEntity(enum)
+  }
+}
+package Exceptions {
+  abstract class BusinessException
+  class EntityNotFoundException <<404>>
+  class BusinessValidationException <<400>>
+  class BusinessConflictException <<409>>
+  class AccessDeniedException <<403>>
+  class InvalidCredentialsException <<401>>
+}
+BusinessException <|-- EntityNotFoundException
+BusinessException <|-- BusinessValidationException
+BusinessException <|-- BusinessConflictException
+BusinessException <|-- AccessDeniedException
+BusinessException <|-- InvalidCredentialsException
+EntityMapper ..> Models
+EntityMapper ..> EnumMapper
+@enduml

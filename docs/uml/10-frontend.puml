@@ -1,0 +1,51 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title Frontend (Vue 3): структура
+package "views" {
+  [HomeView] as V1
+  [ToursView] as V2
+  [TourDetailsView] as V3
+  [HotelsView / HotelDetailsView] as V4
+  [TransportView] as V5
+  [MyBookingsView] as V6
+  [Login / Register] as V7
+  package "manager" {
+    [ManageToursView] as M1
+    [TourFormView] as M2
+    [AllBookingsView] as M3
+    [CatalogView] as M4
+  }
+  package "admin" {
+    [UsersView] as A1
+  }
+}
+package "components" {
+  [AppNavbar] as C1
+  [TourCard] as C2
+  [PriceTag] as C3
+  [CountryRegionSelect] as C4
+  [BookingsPanel] as C5
+  [ErrorAlert / LoadingBlock / StatusBadge] as C6
+}
+[router (guards by role)] as R
+[stores/auth (Pinia)] as S
+[composables/useAsync] as UA
+[api/index.js] as API
+[api/http.js (axios + JWT)] as HTTP
+cloud "TravelAgency.WebAPI" as BE
+R ..> S
+C1 ..> S
+V2 ..> C2
+V2 ..> C4
+V3 ..> C3
+V6 ..> C5
+M3 ..> C5
+views ..> UA
+views ..> API
+S ..> API
+API ..> HTTP
+HTTP --> BE : REST/JSON
+@enduml

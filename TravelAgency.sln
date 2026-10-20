@@ -1,0 +1,61 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgency.DAL.Abstractions", "src\TravelAgency.DAL.Abstractions\TravelAgency.DAL.Abstractions.csproj", "{B0000000-0001-4000-8000-000000000001}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgency.DAL.EF", "src\TravelAgency.DAL.EF\TravelAgency.DAL.EF.csproj", "{B0000000-0002-4000-8000-000000000002}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgency.BLL", "src\TravelAgency.BLL\TravelAgency.BLL.csproj", "{B0000000-0003-4000-8000-000000000003}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgency.Infrastructure", "src\TravelAgency.Infrastructure\TravelAgency.Infrastructure.csproj", "{B0000000-0004-4000-8000-000000000004}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgency.WebAPI", "src\TravelAgency.WebAPI\TravelAgency.WebAPI.csproj", "{B0000000-0005-4000-8000-000000000005}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgency.BLL.Tests", "tests\TravelAgency.BLL.Tests\TravelAgency.BLL.Tests.csproj", "{B0000000-0006-4000-8000-000000000006}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B0000000-00FF-4000-8000-0000000000FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B0000000-00FE-4000-8000-0000000000FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0000000-0001-4000-8000-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0000000-0001-4000-8000-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0000000-0001-4000-8000-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0000000-0001-4000-8000-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0000000-0002-4000-8000-000000000002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0000000-0002-4000-8000-000000000002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0000000-0002-4000-8000-000000000002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0000000-0002-4000-8000-000000000002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0000000-0003-4000-8000-000000000003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0000000-0003-4000-8000-000000000003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0000000-0003-4000-8000-000000000003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0000000-0003-4000-8000-000000000003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0000000-0004-4000-8000-000000000004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0000000-0004-4000-8000-000000000004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0000000-0004-4000-8000-000000000004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0000000-0004-4000-8000-000000000004}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0000000-0005-4000-8000-000000000005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0000000-0005-4000-8000-000000000005}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0000000-0005-4000-8000-000000000005}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0000000-0005-4000-8000-000000000005}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0000000-0006-4000-8000-000000000006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0000000-0006-4000-8000-000000000006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0000000-0006-4000-8000-000000000006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0000000-0006-4000-8000-000000000006}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B0000000-0001-4000-8000-000000000001} = {B0000000-00FF-4000-8000-0000000000FF}
+		{B0000000-0002-4000-8000-000000000002} = {B0000000-00FF-4000-8000-0000000000FF}
+		{B0000000-0003-4000-8000-000000000003} = {B0000000-00FF-4000-8000-0000000000FF}
+		{B0000000-0004-4000-8000-000000000004} = {B0000000-00FF-4000-8000-0000000000FF}
+		{B0000000-0005-4000-8000-000000000005} = {B0000000-00FF-4000-8000-0000000000FF}
+		{B0000000-0006-4000-8000-000000000006} = {B0000000-00FE-4000-8000-0000000000FE}
+	EndGlobalSection
+EndGlobal

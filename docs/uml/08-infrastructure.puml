@@ -1,0 +1,32 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title Infrastructure: DI (Autofac)
+class Module <<Autofac>>
+class DataAccessModule {
+  - _connectionString
+  # Load(builder)
+}
+class BusinessLogicModule {
+  # Load(builder)
+}
+class "Program.cs (WebAPI)" as P
+Module <|-- DataAccessModule
+Module <|-- BusinessLogicModule
+P ..> DataAccessModule
+P ..> BusinessLogicModule
+note right of DataAccessModule
+  DbContextOptions — SingleInstance
+  TravelAgencyContext — InstancePerLifetimeScope
+  EfUnitOfWork as IUnitOfWork — InstancePerLifetimeScope
+  BuildCallback: EnsureCreated
+end note
+note right of BusinessLogicModule
+  *Service → AsImplementedInterfaces,
+  InstancePerLifetimeScope
+  SystemClock as IClock — SingleInstance
+  Pbkdf2PasswordHasher as IPasswordHasher — SingleInstance
+end note
+@enduml

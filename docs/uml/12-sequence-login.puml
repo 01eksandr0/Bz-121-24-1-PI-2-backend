@@ -1,0 +1,27 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title Вхід і використання JWT
+actor Користувач
+participant "LoginView +\nstores/auth" as V
+participant "AuthController" as C
+participant "AuthService" as S
+participant "IPasswordHasher" as P
+participant "JwtTokenService" as T
+Користувач -> V : email, пароль
+V -> C : POST /api/auth/login
+C -> S : Login(LoginModel)
+S -> S : знайти користувача за email
+S -> P : Verify(password, hash)
+alt неправильно
+  S --> C : InvalidCredentialsException → 401
+else правильно
+  S --> C : UserModel (з роллю)
+  C -> T : Create(user)
+  T --> C : JWT (sub, name, email, role, exp)
+  C --> V : AuthResponse { token, user }
+  V -> V : зберегти в localStorage,\nпоказати меню за роллю
+end
+@enduml

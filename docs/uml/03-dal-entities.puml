@@ -1,0 +1,107 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title DAL.Abstractions: сутності (схема даних) і контракти
+interface IEntity {
+  + Id : int
+}
+interface IBookingEntity {
+  + UserId : int
+  + Status : BookingStatus
+  + TotalPrice : decimal
+  + CreatedAt : DateTime
+}
+class User {
+  FullName, Email, PasswordHash
+  Role : UserRole
+}
+class Country {
+  Name
+}
+class Region {
+  Name, CountryId
+}
+class Tour {
+  Title, Description
+  Type : TourType
+  RegionId, StartDate, EndDate
+  PricePerPerson, DiscountPercent, Capacity
+}
+class TourBooking {
+  TourId, Persons
+}
+class Hotel {
+  Name, Description, Stars, RegionId
+}
+class HotelRoom {
+  HotelId, Name, Capacity, PricePerNight
+}
+class RoomBooking {
+  RoomId, CheckIn, CheckOut, Guests
+}
+class TransportTrip {
+  Type : TransportType
+  FromCity, ToCity, DepartureAt, ArrivalAt
+  Price, SeatsTotal
+}
+class TicketBooking {
+  TripId, Seats
+}
+enum UserRole {
+  Customer
+  Manager
+  Admin
+}
+enum TourType {
+  Beach
+  Excursion
+  Ski
+  Cruise
+  Health
+}
+enum BookingStatus {
+  Active
+  Cancelled
+}
+enum TransportType {
+  Plane
+  Train
+  Bus
+}
+interface "IRepository<TEntity>" as IR {
+  + GetById(id)
+  + GetAll(includes)
+  + Find(predicate, includes)
+  + FirstOrDefault(predicate, includes)
+  + Any(predicate)
+  + Add(entity) / Update(entity) / Remove(entity)
+}
+interface IUnitOfWork {
+  + Repository<TEntity>() : IRepository<TEntity>
+  + SaveChanges()
+}
+IEntity <|-- IBookingEntity
+IEntity <|.. User
+IEntity <|.. Country
+IEntity <|.. Region
+IEntity <|.. Tour
+IEntity <|.. Hotel
+IEntity <|.. HotelRoom
+IEntity <|.. TransportTrip
+IBookingEntity <|.. TourBooking
+IBookingEntity <|.. RoomBooking
+IBookingEntity <|.. TicketBooking
+Country "1" <-- "*" Region
+Region "1" <-- "*" Tour
+Region "1" <-- "*" Hotel
+Hotel "1" *-- "*" HotelRoom
+Tour "1" <-- "*" TourBooking
+HotelRoom "1" <-- "*" RoomBooking
+TransportTrip "1" <-- "*" TicketBooking
+User "1" <-- "*" TourBooking
+User "1" <-- "*" RoomBooking
+User "1" <-- "*" TicketBooking
+IUnitOfWork ..> IR
+@enduml

@@ -1,0 +1,48 @@
+@startuml
+skinparam defaultFontName DejaVu Sans
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title DAL.EF: реалізація на Entity Framework Core (MS SQL)
+interface "IRepository<TEntity>" as IR
+interface IUnitOfWork
+class DbContext <<EF Core>>
+class TravelAgencyContext {
+  + DbSet × 10
+  # OnModelCreating(): ApplyConfigurationsFromAssembly
+}
+class "EfRepository<TEntity>" as R <<internal>> {
+  - _context : DbContext
+  - _set : DbSet<TEntity>
+  - WithIncludes(includes)
+}
+class EfRepositoryProvider <<internal>> {
+  - _repositories : Dictionary<Type, object>
+  + Get<TEntity>()
+}
+class EfUnitOfWork {
+  - _context
+  - _repositories
+}
+interface "IEntityTypeConfiguration<T>" as CFG <<EF Core>>
+class "UserConfiguration\nTourConfiguration\n... (10 класів)" as Cfgs <<internal>>
+class ConfigurationConstants <<static>>
+class DatabaseInitializer <<static>> {
+  + CreateOptions(connectionString)
+  + EnsureCreated(options)
+}
+class DemoDataSeeder <<static, internal>>
+class DesignTimeContextFactory
+DbContext <|-- TravelAgencyContext
+IR <|.. R
+IUnitOfWork <|.. EfUnitOfWork
+EfUnitOfWork *-- EfRepositoryProvider
+EfUnitOfWork o-- TravelAgencyContext
+EfRepositoryProvider ..> R : створює, кешує
+CFG <|.. Cfgs
+TravelAgencyContext ..> Cfgs : застосовує
+Cfgs ..> ConfigurationConstants
+DatabaseInitializer ..> DemoDataSeeder
+DatabaseInitializer ..> TravelAgencyContext
+DesignTimeContextFactory ..> DatabaseInitializer
+@enduml
