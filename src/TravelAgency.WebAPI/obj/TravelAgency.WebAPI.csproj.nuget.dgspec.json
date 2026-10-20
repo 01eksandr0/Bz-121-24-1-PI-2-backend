@@ -1,0 +1,355 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.WebAPI/TravelAgency.WebAPI.csproj": {}
+  },
+  "projects": {
+    "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/TravelAgency.BLL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/TravelAgency.BLL.csproj",
+        "projectName": "TravelAgency.BLL",
+        "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/TravelAgency.BLL.csproj",
+        "packagesPath": "/Users/pc-892/.nuget/packages/",
+        "outputPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/pc-892/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/TravelAgency.DAL.Abstractions.csproj": {
+                "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/TravelAgency.DAL.Abstractions.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/pc-892/.dotnet/sdk/8.0.426/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/TravelAgency.DAL.Abstractions.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/TravelAgency.DAL.Abstractions.csproj",
+        "projectName": "TravelAgency.DAL.Abstractions",
+        "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/TravelAgency.DAL.Abstractions.csproj",
+        "packagesPath": "/Users/pc-892/.nuget/packages/",
+        "outputPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/pc-892/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/pc-892/.dotnet/sdk/8.0.426/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.EF/TravelAgency.DAL.EF.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.EF/TravelAgency.DAL.EF.csproj",
+        "projectName": "TravelAgency.DAL.EF",
+        "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.EF/TravelAgency.DAL.EF.csproj",
+        "packagesPath": "/Users/pc-892/.nuget/packages/",
+        "outputPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.EF/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/pc-892/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/TravelAgency.DAL.Abstractions.csproj": {
+                "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/TravelAgency.DAL.Abstractions.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/pc-892/.dotnet/sdk/8.0.426/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.Infrastructure/TravelAgency.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.Infrastructure/TravelAgency.Infrastructure.csproj",
+        "projectName": "TravelAgency.Infrastructure",
+        "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.Infrastructure/TravelAgency.Infrastructure.csproj",
+        "packagesPath": "/Users/pc-892/.nuget/packages/",
+        "outputPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/pc-892/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/TravelAgency.BLL.csproj": {
+                "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/TravelAgency.BLL.csproj"
+              },
+              "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.EF/TravelAgency.DAL.EF.csproj": {
+                "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.EF/TravelAgency.DAL.EF.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Autofac": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/pc-892/.dotnet/sdk/8.0.426/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.WebAPI/TravelAgency.WebAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.WebAPI/TravelAgency.WebAPI.csproj",
+        "projectName": "TravelAgency.WebAPI",
+        "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.WebAPI/TravelAgency.WebAPI.csproj",
+        "packagesPath": "/Users/pc-892/.nuget/packages/",
+        "outputPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.WebAPI/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/pc-892/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/TravelAgency.BLL.csproj": {
+                "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/TravelAgency.BLL.csproj"
+              },
+              "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.Infrastructure/TravelAgency.Infrastructure.csproj": {
+                "projectPath": "/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.Infrastructure/TravelAgency.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Autofac.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.6.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/pc-892/.dotnet/sdk/8.0.426/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "wVhvEVhUIQR266xcE5mTwhASOE8ianUHQnw62bU3GHU=",
+  "Source": "TravelAgency.WebAPI",
+  "BasePath": "_content/TravelAgency.WebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

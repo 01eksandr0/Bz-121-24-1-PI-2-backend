@@ -1,0 +1,16 @@
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/bin/Debug/net8.0/TravelAgency.BLL.deps.json
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/bin/Debug/net8.0/TravelAgency.BLL.dll
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/bin/Debug/net8.0/TravelAgency.BLL.pdb
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/bin/Debug/net8.0/TravelAgency.DAL.Abstractions.dll
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/bin/Debug/net8.0/TravelAgency.DAL.Abstractions.pdb
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/TravelAgency.BLL.csproj.AssemblyReference.cache
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/TravelAgency.BLL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/TravelAgency.BLL.AssemblyInfoInputs.cache
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/TravelAgency.BLL.AssemblyInfo.cs
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/TravelAgency.BLL.csproj.CoreCompileInputs.cache
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/TravelAgency.BLL.sourcelink.json
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/TravelAg.689CFB21.Up2Date
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/TravelAgency.BLL.dll
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/refint/TravelAgency.BLL.dll
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/TravelAgency.BLL.pdb
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.BLL/obj/Debug/net8.0/ref/TravelAgency.BLL.dll

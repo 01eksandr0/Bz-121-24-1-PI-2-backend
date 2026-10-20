@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "TravelAgency.BLL/1.0.0": {
+        "dependencies": {
+          "TravelAgency.DAL.Abstractions": "1.0.0"
+        },
+        "runtime": {
+          "TravelAgency.BLL.dll": {}
+        }
+      },
+      "TravelAgency.DAL.Abstractions/1.0.0": {
+        "runtime": {
+          "TravelAgency.DAL.Abstractions.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TravelAgency.BLL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TravelAgency.DAL.Abstractions/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

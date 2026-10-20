@@ -1,0 +1,12 @@
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/bin/Debug/net8.0/TravelAgency.DAL.Abstractions.deps.json
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/bin/Debug/net8.0/TravelAgency.DAL.Abstractions.dll
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/bin/Debug/net8.0/TravelAgency.DAL.Abstractions.pdb
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/Debug/net8.0/TravelAgency.DAL.Abstractions.GeneratedMSBuildEditorConfig.editorconfig
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/Debug/net8.0/TravelAgency.DAL.Abstractions.AssemblyInfoInputs.cache
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/Debug/net8.0/TravelAgency.DAL.Abstractions.AssemblyInfo.cs
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/Debug/net8.0/TravelAgency.DAL.Abstractions.csproj.CoreCompileInputs.cache
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/Debug/net8.0/TravelAgency.DAL.Abstractions.sourcelink.json
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/Debug/net8.0/TravelAgency.DAL.Abstractions.dll
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/Debug/net8.0/refint/TravelAgency.DAL.Abstractions.dll
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/Debug/net8.0/TravelAgency.DAL.Abstractions.pdb
+/Users/pc-892/Desktop/LOOK/Bz-121-24-1-PI-2-backend/src/TravelAgency.DAL.Abstractions/obj/Debug/net8.0/ref/TravelAgency.DAL.Abstractions.dll
