@@ -39,7 +39,7 @@ namespace TravelAgency.WebAPI.Controllers
 
         /// <summary>POST api/room-bookings</summary>
         [HttpPost]
-        public ActionResult<RoomBookingResponse> Book([FromBody] BookRoomRequest request)
+        public ActionResult<RoomBookingResponse> Book([FromBody] RoomBookingRequest request)
         {
             RoomBookingResponse booking = _bookings.Book(User.GetUserId(), request.ToModel()).ToResponse();
             return Created("/api/room-bookings/my", booking);

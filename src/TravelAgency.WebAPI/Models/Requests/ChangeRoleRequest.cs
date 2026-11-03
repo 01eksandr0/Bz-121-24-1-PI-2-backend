@@ -6,7 +6,7 @@ namespace TravelAgency.WebAPI.Models.Requests
     /// <summary>Нова роль: Customer, Manager або Admin.</summary>
     public class ChangeRoleRequest
     {
-        [Required, EnumDataType(typeof(Role))]
+        [Required, EnumDataType(typeof(UserRole))]
         public string Role { get; set; }
     }
 }

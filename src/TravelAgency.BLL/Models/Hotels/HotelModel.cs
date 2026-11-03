@@ -20,6 +20,6 @@ namespace TravelAgency.BLL.Models.Hotels
 
         public decimal MinPricePerNight { get; set; }
 
-        public IReadOnlyList<HotelRoomModel> Rooms { get; set; } = new List<HotelRoomModel>();
+        public IReadOnlyList<RoomModel> Rooms { get; set; } = new List<RoomModel>();
     }
 }

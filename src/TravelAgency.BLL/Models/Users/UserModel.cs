@@ -8,6 +8,6 @@ namespace TravelAgency.BLL.Models.Users
 
         public string Email { get; set; }
 
-        public Role Role { get; set; }
+        public UserRole Role { get; set; }
     }
 }

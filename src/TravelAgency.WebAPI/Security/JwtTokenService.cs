@@ -8,7 +8,7 @@ using TravelAgency.BLL.Models.Users;
 
 namespace TravelAgency.WebAPI.Security
 {
-    public class JwtTokenService : IJwtTokenService
+    internal class JwtTokenService : IJwtTokenService
     {
         private readonly JwtOptions _options;
 

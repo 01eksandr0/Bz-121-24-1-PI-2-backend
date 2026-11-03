@@ -12,12 +12,15 @@ package Fakes <<stubs>> {
   class TestData <<static>>
 }
 package Services {
-  class TourServiceTests <<15>>
+  class TourServiceTests <<16>>
   class TourBookingServiceTests <<14>>
-  class RoomBookingServiceTests <<6>>
+  class RoomBookingServiceTests <<7>>
   class TicketBookingServiceTests <<3>>
-  class HotelAndTransportServiceTests <<5>>
-  class AuthAndUserServiceTests <<9>>
+  class HotelServiceTests <<6>>
+  class TripServiceTests <<3>>
+  class AuthServiceTests <<5>>
+  class UserServiceTests <<3>>
+  class CountryServiceTests <<2>>
 }
 package Mapping {
   class EnumMappingTests <<4>>

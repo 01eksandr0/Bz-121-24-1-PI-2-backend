@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TravelAgency.BLL.Common;
 using TravelAgency.BLL.Models.Bookings;
-using TravelAgency.BLL.Models.Geography;
+using TravelAgency.BLL.Models.Countries;
 using TravelAgency.BLL.Models.Hotels;
 using TravelAgency.BLL.Models.Tours;
-using TravelAgency.BLL.Models.Transport;
+using TravelAgency.BLL.Models.Trips;
 using TravelAgency.BLL.Models.Users;
 using TravelAgency.DAL.Abstractions.Entities;
 
@@ -96,15 +96,23 @@ namespace TravelAgency.BLL.Mapping
             };
         }
 
-        public static HotelRoomModel ToModel(this HotelRoom room)
+        public static RoomModel ToModel(this Room room)
         {
-            return new HotelRoomModel { Id = room.Id, HotelId = room.HotelId, Name = room.Name, Capacity = room.Capacity, PricePerNight = room.PricePerNight };
+            return new RoomModel
+            {
+                Id = room.Id,
+                HotelId = room.HotelId,
+                Name = room.Name,
+                Capacity = room.Capacity,
+                Quantity = room.Quantity,
+                PricePerNight = room.PricePerNight
+            };
         }
 
         /// <summary>Потребує Region.Country і Rooms.</summary>
         public static HotelModel ToModel(this Hotel hotel)
         {
-            List<HotelRoomModel> rooms = hotel.Rooms.OrderBy(r => r.PricePerNight).Select(r => r.ToModel()).ToList();
+            List<RoomModel> rooms = hotel.Rooms.OrderBy(r => r.PricePerNight).Select(r => r.ToModel()).ToList();
             return new HotelModel
             {
                 Id = hotel.Id,
@@ -140,7 +148,7 @@ namespace TravelAgency.BLL.Mapping
             };
         }
 
-        public static TripModel ToModel(this TransportTrip trip, int bookedSeats)
+        public static TripModel ToModel(this Trip trip, int bookedPlaces)
         {
             return new TripModel
             {
@@ -151,8 +159,8 @@ namespace TravelAgency.BLL.Mapping
                 DepartureAt = trip.DepartureAt,
                 ArrivalAt = trip.ArrivalAt,
                 Price = trip.Price,
-                SeatsTotal = trip.SeatsTotal,
-                FreeSeats = trip.SeatsTotal - bookedSeats
+                Capacity = trip.Capacity,
+                FreePlaces = trip.Capacity - bookedPlaces
             };
         }
 

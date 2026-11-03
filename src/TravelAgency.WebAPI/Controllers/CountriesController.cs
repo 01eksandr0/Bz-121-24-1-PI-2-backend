@@ -14,18 +14,18 @@ namespace TravelAgency.WebAPI.Controllers
     [Route("api/countries")]
     public class CountriesController : ControllerBase
     {
-        private readonly IGeographyService _geography;
+        private readonly ICountryService _countries;
 
-        public CountriesController(IGeographyService geography)
+        public CountriesController(ICountryService countries)
         {
-            _geography = geography;
+            _countries = countries;
         }
 
         /// <summary>GET api/countries - країни з регіонами.</summary>
         [HttpGet]
         public ActionResult<List<CountryResponse>> GetAll()
         {
-            return _geography.GetCountries().ToResponses(c => c.ToResponse());
+            return _countries.GetCountries().ToResponses(c => c.ToResponse());
         }
 
         /// <summary>POST api/countries</summary>
@@ -33,7 +33,7 @@ namespace TravelAgency.WebAPI.Controllers
         [Authorize(Roles = ApiRoles.Staff)]
         public ActionResult<CountryResponse> Create([FromBody] NameRequest request)
         {
-            CountryResponse country = _geography.CreateCountry(request.Name).ToResponse();
+            CountryResponse country = _countries.CreateCountry(request.Name).ToResponse();
             return Created("/api/countries", country);
         }
 
@@ -42,7 +42,7 @@ namespace TravelAgency.WebAPI.Controllers
         [Authorize(Roles = ApiRoles.Staff)]
         public ActionResult<RegionResponse> CreateRegion(int countryId, [FromBody] NameRequest request)
         {
-            RegionResponse region = _geography.CreateRegion(countryId, request.Name).ToResponse();
+            RegionResponse region = _countries.CreateRegion(countryId, request.Name).ToResponse();
             return Created("/api/countries", region);
         }
     }

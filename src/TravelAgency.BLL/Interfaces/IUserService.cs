@@ -10,6 +10,6 @@ namespace TravelAgency.BLL.Interfaces
 
         UserModel GetById(int id);
 
-        UserModel ChangeRole(int actingUserId, int userId, Role role);
+        UserModel ChangeRole(int actingUserId, int userId, UserRole role);
     }
 }

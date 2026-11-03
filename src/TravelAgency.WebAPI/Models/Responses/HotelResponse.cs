@@ -20,6 +20,6 @@ namespace TravelAgency.WebAPI.Models.Responses
 
         public decimal MinPricePerNight { get; set; }
 
-        public IReadOnlyList<HotelRoomResponse> Rooms { get; set; }
+        public IReadOnlyList<RoomResponse> Rooms { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace TravelAgency.DAL.Abstractions.Interfaces
 
         IReadOnlyList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes);
 
-        IReadOnlyList<TEntity> Find(
+        IReadOnlyList<TEntity> FindAll(
             Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, object>>[] includes);
 

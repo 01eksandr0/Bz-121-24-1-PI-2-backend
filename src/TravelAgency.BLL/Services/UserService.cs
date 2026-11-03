@@ -1,17 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TravelAgency.BLL.Exceptions;
 using TravelAgency.BLL.Interfaces;
 using TravelAgency.BLL.Internal;
 using TravelAgency.BLL.Mapping;
-using TravelAgency.BLL.Models;
 using TravelAgency.BLL.Models.Users;
 using TravelAgency.DAL.Abstractions.Entities;
 using TravelAgency.DAL.Abstractions.Interfaces;
 
 namespace TravelAgency.BLL.Services
 {
-    public class UserService : IUserService
+    internal class UserService : IUserService
     {
         private const string EntityName = "Користувача";
 
@@ -35,8 +35,12 @@ namespace TravelAgency.BLL.Services
         }
 
         /// <summary>Адміністратор змінює роль іншого користувача (власну - ні, щоб не залишити систему без адміністратора).</summary>
-        public UserModel ChangeRole(int actingUserId, int userId, Role role)
+        public UserModel ChangeRole(int actingUserId, int userId, Models.UserRole role)
         {
+            if (!Enum.IsDefined(typeof(Models.UserRole), role))
+            {
+                throw new ValidationFailedException("Невідома роль.");
+            }
             if (actingUserId == userId)
             {
                 throw new AccessDeniedException("Не можна змінити власну роль.");

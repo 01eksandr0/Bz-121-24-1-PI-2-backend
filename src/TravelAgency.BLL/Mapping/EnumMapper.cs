@@ -1,26 +1,25 @@
-using TravelAgency.BLL.Models;
-using TravelAgency.DAL.Abstractions.Entities;
+using Entities = TravelAgency.DAL.Abstractions.Entities;
 
 namespace TravelAgency.BLL.Mapping
 {
     /// <summary>
-    /// Перетворення переліків DAL у переліки BLL і навпаки. Числові значення однакові,
+    /// Перетворення переліків DAL у однойменні переліки BLL і навпаки. Числові значення однакові,
     /// а тест EnumMappingTests гарантує, що вони не розійдуться.
     /// </summary>
     internal static class EnumMapper
     {
-        public static Role ToModel(this UserRole role) => (Role)(int)role;
+        public static Models.UserRole ToModel(this Entities.UserRole role) => (Models.UserRole)(int)role;
 
-        public static UserRole ToEntity(this Role role) => (UserRole)(int)role;
+        public static Entities.UserRole ToEntity(this Models.UserRole role) => (Entities.UserRole)(int)role;
 
-        public static TourKind ToModel(this TourType type) => (TourKind)(int)type;
+        public static Models.TourType ToModel(this Entities.TourType type) => (Models.TourType)(int)type;
 
-        public static TourType ToEntity(this TourKind type) => (TourType)(int)type;
+        public static Entities.TourType ToEntity(this Models.TourType type) => (Entities.TourType)(int)type;
 
-        public static BookingState ToModel(this BookingStatus status) => (BookingState)(int)status;
+        public static Models.BookingStatus ToModel(this Entities.BookingStatus status) => (Models.BookingStatus)(int)status;
 
-        public static TransportKind ToModel(this TransportType type) => (TransportKind)(int)type;
+        public static Models.TransportType ToModel(this Entities.TransportType type) => (Models.TransportType)(int)type;
 
-        public static TransportType ToEntity(this TransportKind type) => (TransportType)(int)type;
+        public static Entities.TransportType ToEntity(this Models.TransportType type) => (Entities.TransportType)(int)type;
     }
 }

@@ -17,7 +17,7 @@ package Controllers {
 }
 package Models {
   package Requests {
-    class "LoginRequest, RegisterRequest,\nTourRequest, TourSearchQuery,\nBookTourRequest, BookRoomRequest,\nBookTicketRequest, HotelRequest,\nHotelRoomRequest, TripRequest, ..." as Req
+    class "LoginRequest, RegisterRequest,\nTourRequest, TourSearchQuery,\nTourBookingRequest, RoomBookingRequest,\nTicketBookingRequest, HotelRequest,\nRoomRequest, TripRequest, ..." as Req
   }
   package Responses {
     class "AuthResponse, UserResponse,\nTourResponse, HotelResponse,\nTripResponse, *BookingResponse, ..." as Resp
@@ -28,13 +28,16 @@ package Mapping {
 }
 package Security {
   interface IJwtTokenService
-  class JwtTokenService
-  class JwtOptions
+  class JwtTokenService <<internal>>
+  class JwtOptions <<internal>>
+  class TokenRoleValidator <<static>> {
+    + ValidateAsync(context)
+  }
   class ApiRoles <<static>>
   class ClaimsPrincipalExtensions <<static>>
 }
 package Middleware {
-  class ExceptionHandlingMiddleware {
+  class ExceptionHandlingMiddleware <<internal>> {
     + InvokeAsync(context)
   }
 }
@@ -50,4 +53,5 @@ ApiMapper ..> Req
 ApiMapper ..> Resp
 Controllers ..> ClaimsPrincipalExtensions : User.GetUserId()
 Controllers ..> ApiRoles : [Authorize(Roles)]
+TokenRoleValidator ..> IS : IUserService.GetById
 @enduml

@@ -10,7 +10,7 @@ namespace TravelAgency.BLL.Models.Bookings
 
         public string Route { get; set; }
 
-        public TransportKind TransportType { get; set; }
+        public TransportType TransportType { get; set; }
 
         public DateTime DepartureAt { get; set; }
 
@@ -22,7 +22,7 @@ namespace TravelAgency.BLL.Models.Bookings
 
         public decimal TotalPrice { get; set; }
 
-        public BookingState Status { get; set; }
+        public BookingStatus Status { get; set; }
 
         public DateTime CreatedAt { get; set; }
     }

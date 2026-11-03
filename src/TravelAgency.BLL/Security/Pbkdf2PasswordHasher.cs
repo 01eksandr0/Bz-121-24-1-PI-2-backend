@@ -7,7 +7,7 @@ namespace TravelAgency.BLL.Security
     /// Хешування паролів PBKDF2-SHA256 з випадковою сіллю.
     /// Формат: PBKDF2-SHA256$ітерації$сіль(base64)$хеш(base64).
     /// </summary>
-    public class Pbkdf2PasswordHasher : IPasswordHasher
+    internal class Pbkdf2PasswordHasher : IPasswordHasher
     {
         private const string Prefix = "PBKDF2-SHA256";
         private const char Separator = '$';

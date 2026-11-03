@@ -9,7 +9,7 @@ namespace TravelAgency.BLL.Models.Tours
 
         public string Description { get; set; }
 
-        public TourKind Type { get; set; }
+        public TourType Type { get; set; }
 
         public int RegionId { get; set; }
 

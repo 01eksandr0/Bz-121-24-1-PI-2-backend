@@ -35,16 +35,18 @@ class TourBooking {
 class Hotel {
   Name, Description, Stars, RegionId
 }
-class HotelRoom {
-  HotelId, Name, Capacity, PricePerNight
+class Room {
+  HotelId, Name, Capacity
+  Quantity (однакових номерів)
+  PricePerNight
 }
 class RoomBooking {
   RoomId, CheckIn, CheckOut, Guests
 }
-class TransportTrip {
+class Trip {
   Type : TransportType
   FromCity, ToCity, DepartureAt, ArrivalAt
-  Price, SeatsTotal
+  Price, Capacity
 }
 class TicketBooking {
   TripId, Seats
@@ -73,7 +75,7 @@ enum TransportType {
 interface "IRepository<TEntity>" as IR {
   + GetById(id)
   + GetAll(includes)
-  + Find(predicate, includes)
+  + FindAll(predicate, includes)
   + FirstOrDefault(predicate, includes)
   + Any(predicate)
   + Add(entity) / Update(entity) / Remove(entity)
@@ -81,6 +83,12 @@ interface "IRepository<TEntity>" as IR {
 interface IUnitOfWork {
   + Repository<TEntity>() : IRepository<TEntity>
   + SaveChanges()
+  + ExecuteInTransaction(action)
+}
+class ConcurrencyConflictException
+class EntityLimits <<static>> {
+  NameLength, TitleLength,
+  EmailLength, DescriptionLength
 }
 IEntity <|-- IBookingEntity
 IEntity <|.. User
@@ -88,20 +96,21 @@ IEntity <|.. Country
 IEntity <|.. Region
 IEntity <|.. Tour
 IEntity <|.. Hotel
-IEntity <|.. HotelRoom
-IEntity <|.. TransportTrip
+IEntity <|.. Room
+IEntity <|.. Trip
 IBookingEntity <|.. TourBooking
 IBookingEntity <|.. RoomBooking
 IBookingEntity <|.. TicketBooking
 Country "1" <-- "*" Region
 Region "1" <-- "*" Tour
 Region "1" <-- "*" Hotel
-Hotel "1" *-- "*" HotelRoom
+Hotel "1" *-- "*" Room
 Tour "1" <-- "*" TourBooking
-HotelRoom "1" <-- "*" RoomBooking
-TransportTrip "1" <-- "*" TicketBooking
+Room "1" <-- "*" RoomBooking
+Trip "1" <-- "*" TicketBooking
 User "1" <-- "*" TourBooking
 User "1" <-- "*" RoomBooking
 User "1" <-- "*" TicketBooking
 IUnitOfWork ..> IR
+IUnitOfWork ..> ConcurrencyConflictException
 @enduml

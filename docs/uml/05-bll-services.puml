@@ -7,7 +7,7 @@ title BLL: сервіси, інтерфейси і допоміжні класи
 package Interfaces {
   interface IAuthService
   interface IUserService
-  interface IGeographyService
+  interface ICountryService
   interface ITourService {
     + Search(filter)
     + GetById(id)
@@ -23,58 +23,80 @@ package Interfaces {
   }
   interface IHotelService
   interface IRoomBookingService
-  interface ITransportService
+  interface ITripService
   interface ITicketBookingService
 }
-package Services {
+package Services <<internal>> {
   class AuthService
   class UserService
-  class GeographyService
+  class CountryService
   class TourService
+  abstract class "BookingServiceBase<TBooking, TModel>" as BSB {
+    + GetByUser(userId)
+    + GetAll()
+    + Cancel(bookingId, userId)
+    # Add(booking) / Reload(booking)
+    # {abstract} StartOf(booking)
+    # {abstract} ToModel(booking)
+    # {abstract} CancellationDeadlineDays
+  }
   class TourBookingService
   class HotelService
   class RoomBookingService
-  class TransportService
+  class TripService
   class TicketBookingService
 }
 package Internal <<internal>> {
-  class BookingCancellation <<static>>
+  class BookingCancellationPolicy <<static>>
+  class Occupancy <<static>> {
+    + TourPlaces(ids)
+    + TripPlaces(ids)
+    + Rooms(ids, checkIn, checkOut)
+  }
+  class UnitOfWorkExtensions <<static>> {
+    + InTransaction(action)
+  }
   class Guard <<static>>
   class UserGuard <<static>>
   class StayPeriod <<static>>
   class RepositoryExtensions <<static>>
-  class EmailNormalizer <<static>>
+  class EmailRules <<static>>
 }
-package Common {
+package Common <<internal>> {
   interface IClock
   class SystemClock
   class Pricing <<static>>
   class BusinessRules <<static>>
 }
-package Security {
+package Security <<internal>> {
   interface IPasswordHasher
   class Pbkdf2PasswordHasher
 }
 interface IUnitOfWork <<DAL.Abstractions>>
 IAuthService <|.. AuthService
 IUserService <|.. UserService
-IGeographyService <|.. GeographyService
+ICountryService <|.. CountryService
 ITourService <|.. TourService
 ITourBookingService <|.. TourBookingService
 IHotelService <|.. HotelService
 IRoomBookingService <|.. RoomBookingService
-ITransportService <|.. TransportService
+ITripService <|.. TripService
 ITicketBookingService <|.. TicketBookingService
+BSB <|-- TourBookingService
+BSB <|-- RoomBookingService
+BSB <|-- TicketBookingService
 IClock <|.. SystemClock
 IPasswordHasher <|.. Pbkdf2PasswordHasher
 Services ..> IUnitOfWork
-TourService ..> IClock
-TourBookingService ..> IClock
+BSB ..> IClock
 AuthService ..> IPasswordHasher
-TourBookingService ..> BookingCancellation
-RoomBookingService ..> BookingCancellation
-TicketBookingService ..> BookingCancellation
+BSB ..> BookingCancellationPolicy
+BSB ..> UnitOfWorkExtensions
 TourBookingService ..> Pricing
+TourService ..> Occupancy
+TripService ..> Occupancy
+HotelService ..> Occupancy
+BSB ..> Occupancy
 RoomBookingService ..> StayPeriod
 HotelService ..> StayPeriod
 Services ..> Guard

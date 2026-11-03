@@ -18,8 +18,8 @@ namespace TravelAgency.WebAPI.Models.Responses
 
         public decimal Price { get; set; }
 
-        public int SeatsTotal { get; set; }
+        public int Capacity { get; set; }
 
-        public int FreeSeats { get; set; }
+        public int FreePlaces { get; set; }
     }
 }

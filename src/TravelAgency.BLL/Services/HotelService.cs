@@ -14,7 +14,7 @@ using TravelAgency.DAL.Abstractions.Interfaces;
 namespace TravelAgency.BLL.Services
 {
     /// <summary>Готелі та номери: пошук, вільні номери на дати, додавання (менеджер).</summary>
-    public class HotelService : IHotelService
+    internal class HotelService : IHotelService
     {
         private const string EntityName = "Готель";
 
@@ -31,7 +31,7 @@ namespace TravelAgency.BLL.Services
 
         private IRepository<Hotel> Hotels => _unitOfWork.Repository<Hotel>();
 
-        public IReadOnlyList<HotelModel> Search(HotelFilterModel filter)
+        public IReadOnlyList<HotelModel> Search(HotelSearchModel filter)
         {
             bool anyCountry = !filter.CountryId.HasValue;
             int countryId = filter.CountryId ?? 0;
@@ -39,7 +39,7 @@ namespace TravelAgency.BLL.Services
             int regionId = filter.RegionId ?? 0;
             int minStars = filter.MinStars ?? BusinessRules.MinStars;
 
-            IEnumerable<HotelModel> hotels = Hotels.Find(h =>
+            IEnumerable<HotelModel> hotels = Hotels.FindAll(h =>
                         (anyCountry || h.Region.CountryId == countryId)
                         && (anyRegion || h.RegionId == regionId)
                         && h.Stars >= minStars,
@@ -60,21 +60,16 @@ namespace TravelAgency.BLL.Services
             return Hotels.GetRequired(id, EntityName, Details).ToModel();
         }
 
-        public IReadOnlyList<HotelRoomModel> GetAvailableRooms(int hotelId, DateTime checkIn, DateTime checkOut, int guests)
+        public IReadOnlyList<RoomModel> GetAvailableRooms(int hotelId, DateTime checkIn, DateTime checkOut, int guests)
         {
             Hotel hotel = Hotels.GetRequired(hotelId, EntityName, h => h.Rooms);
             StayPeriod.Validate(checkIn, checkOut, _clock.Today);
+            Guard.InRange(guests, BusinessRules.MinQuantity, BusinessRules.MaxRoomCapacity, "Кількість гостей");
 
-            List<int> roomIds = hotel.Rooms.Select(r => r.Id).ToList();
-            HashSet<int> busyRoomIds = new HashSet<int>(_unitOfWork.Repository<RoomBooking>()
-                .Find(b => roomIds.Contains(b.RoomId)
-                           && b.Status == BookingStatus.Active
-                           && b.CheckIn < checkOut.Date
-                           && checkIn.Date < b.CheckOut)
-                .Select(b => b.RoomId));
+            Dictionary<int, int> busy = Occupancy.Rooms(_unitOfWork, hotel.Rooms.Select(r => r.Id).ToList(), checkIn, checkOut);
 
             return hotel.Rooms
-                .Where(r => r.Capacity >= guests && !busyRoomIds.Contains(r.Id))
+                .Where(r => r.Capacity >= guests && busy[r.Id] < r.Quantity)
                 .OrderBy(r => r.PricePerNight)
                 .Select(r => r.ToModel())
                 .ToList();
@@ -98,15 +93,23 @@ namespace TravelAgency.BLL.Services
             return GetById(hotel.Id);
         }
 
-        public HotelRoomModel AddRoom(int hotelId, HotelRoomInputModel input)
+        public RoomModel AddRoom(int hotelId, RoomInputModel input)
         {
             Hotels.GetRequired(hotelId, EntityName);
             string name = Guard.RequiredText(input.Name, "Назва номера", BusinessRules.MaxNameLength);
-            Guard.InRange(input.Capacity, 1, BusinessRules.MaxRoomCapacity, "Місткість номера");
+            Guard.InRange(input.Capacity, BusinessRules.MinQuantity, BusinessRules.MaxRoomCapacity, "Місткість номера");
+            Guard.InRange(input.Quantity, BusinessRules.MinQuantity, BusinessRules.MaxRoomQuantity, "Кількість номерів");
             Guard.Positive(input.PricePerNight, "Ціна за ніч");
 
-            var room = new HotelRoom { HotelId = hotelId, Name = name, Capacity = input.Capacity, PricePerNight = input.PricePerNight };
-            _unitOfWork.Repository<HotelRoom>().Add(room);
+            var room = new Room
+            {
+                HotelId = hotelId,
+                Name = name,
+                Capacity = input.Capacity,
+                Quantity = input.Quantity,
+                PricePerNight = input.PricePerNight
+            };
+            _unitOfWork.Repository<Room>().Add(room);
             _unitOfWork.SaveChanges();
             return room.ToModel();
         }

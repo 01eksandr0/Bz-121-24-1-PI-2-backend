@@ -6,7 +6,7 @@ namespace TravelAgency.WebAPI.Models.Requests
 {
     public class TripSearchQuery
     {
-        [EnumDataType(typeof(TransportKind))]
+        [EnumDataType(typeof(TransportType))]
         public string Type { get; set; }
 
         public string FromCity { get; set; }

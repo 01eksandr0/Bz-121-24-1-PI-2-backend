@@ -16,14 +16,16 @@ using TravelAgency.WebAPI.Middleware;
 using TravelAgency.WebAPI.Security;
 
 const string FrontendCorsPolicy = "Frontend";
+const string ConnectionStringName = "TravelAgency";
 
 var builder = WebApplication.CreateBuilder(args);
+string connectionString = builder.Configuration.GetConnectionString(ConnectionStringName);
 
 // ---------- DI: Autofac замість стандартного контейнера; рівні реєструються модулями ----------
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 {
-    container.RegisterModule(new DataAccessModule(builder.Configuration.GetConnectionString("TravelAgency")));
+    container.RegisterModule(new DataAccessModule(connectionString));
     container.RegisterModule(new BusinessLogicModule());
     container.RegisterType<JwtTokenService>().As<IJwtTokenService>().SingleInstance();
 });
@@ -50,6 +52,8 @@ builder.Services
             NameClaimType = JwtClaimNames.Name,
             RoleClaimType = JwtClaimNames.Role
         };
+        // роль у токені могла застаріти (адміністратор її змінив) - звіряємо з БД
+        options.Events = new JwtBearerEvents { OnTokenValidated = TokenRoleValidator.ValidateAsync };
     });
 builder.Services.AddAuthorization();
 
@@ -85,6 +89,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+// ---------- база: створити і заповнити демо-даними, якщо її ще немає ----------
+DatabaseSetup.EnsureCreated(connectionString);
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

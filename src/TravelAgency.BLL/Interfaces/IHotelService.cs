@@ -6,14 +6,14 @@ namespace TravelAgency.BLL.Interfaces
 {
     public interface IHotelService
     {
-        IReadOnlyList<HotelModel> Search(HotelFilterModel filter);
+        IReadOnlyList<HotelModel> Search(HotelSearchModel filter);
 
         HotelModel GetById(int id);
 
-        IReadOnlyList<HotelRoomModel> GetAvailableRooms(int hotelId, DateTime checkIn, DateTime checkOut, int guests);
+        IReadOnlyList<RoomModel> GetAvailableRooms(int hotelId, DateTime checkIn, DateTime checkOut, int guests);
 
         HotelModel Create(HotelInputModel input);
 
-        HotelRoomModel AddRoom(int hotelId, HotelRoomInputModel input);
+        RoomModel AddRoom(int hotelId, RoomInputModel input);
     }
 }

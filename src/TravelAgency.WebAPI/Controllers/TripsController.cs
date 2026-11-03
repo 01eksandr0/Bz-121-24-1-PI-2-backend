@@ -14,25 +14,25 @@ namespace TravelAgency.WebAPI.Controllers
     [Route("api/trips")]
     public class TripsController : ControllerBase
     {
-        private readonly ITransportService _transport;
+        private readonly ITripService _trips;
 
-        public TripsController(ITransportService transport)
+        public TripsController(ITripService trips)
         {
-            _transport = transport;
+            _trips = trips;
         }
 
         /// <summary>GET api/trips?type=Plane&amp;toCity=Анталія&amp;date=2025-07-01</summary>
         [HttpGet]
         public ActionResult<List<TripResponse>> Search([FromQuery] TripSearchQuery query)
         {
-            return _transport.Search(query.ToModel()).ToResponses(t => t.ToResponse());
+            return _trips.Search(query.ToModel()).ToResponses(t => t.ToResponse());
         }
 
         /// <summary>GET api/trips/5</summary>
         [HttpGet("{id:int}")]
         public ActionResult<TripResponse> GetById(int id)
         {
-            return _transport.GetById(id).ToResponse();
+            return _trips.GetById(id).ToResponse();
         }
 
         /// <summary>POST api/trips</summary>
@@ -40,7 +40,7 @@ namespace TravelAgency.WebAPI.Controllers
         [Authorize(Roles = ApiRoles.Staff)]
         public ActionResult<TripResponse> Create([FromBody] TripRequest request)
         {
-            TripResponse trip = _transport.Create(request.ToModel()).ToResponse();
+            TripResponse trip = _trips.Create(request.ToModel()).ToResponse();
             return CreatedAtAction(nameof(GetById), new { id = trip.Id }, trip);
         }
     }

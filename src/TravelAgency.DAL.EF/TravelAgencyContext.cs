@@ -22,11 +22,11 @@ namespace TravelAgency.DAL.EF
 
         public DbSet<Hotel> Hotels { get; set; }
 
-        public DbSet<HotelRoom> HotelRooms { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         public DbSet<RoomBooking> RoomBookings { get; set; }
 
-        public DbSet<TransportTrip> TransportTrips { get; set; }
+        public DbSet<Trip> Trips { get; set; }
 
         public DbSet<TicketBooking> TicketBookings { get; set; }
 

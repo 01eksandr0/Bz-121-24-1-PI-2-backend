@@ -16,6 +16,6 @@ namespace TravelAgency.DAL.Abstractions.Entities
 
         public Region Region { get; set; }
 
-        public ICollection<HotelRoom> Rooms { get; set; } = new List<HotelRoom>();
+        public ICollection<Room> Rooms { get; set; } = new List<Room>();
     }
 }

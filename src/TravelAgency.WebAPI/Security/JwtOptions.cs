@@ -1,7 +1,7 @@
 namespace TravelAgency.WebAPI.Security
 {
     /// <summary>Налаштування JWT із розділу "Jwt" файлу appsettings.json.</summary>
-    public class JwtOptions
+    internal class JwtOptions
     {
         public const string SectionName = "Jwt";
 

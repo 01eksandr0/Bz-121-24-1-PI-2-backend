@@ -6,7 +6,7 @@ namespace TravelAgency.WebAPI.Models.Requests
 {
     public class TripRequest
     {
-        [Required, EnumDataType(typeof(TransportKind))]
+        [Required, EnumDataType(typeof(TransportType))]
         public string Type { get; set; }
 
         [Required]
@@ -25,6 +25,6 @@ namespace TravelAgency.WebAPI.Models.Requests
         public decimal? Price { get; set; }
 
         [Required]
-        public int? SeatsTotal { get; set; }
+        public int? Capacity { get; set; }
     }
 }

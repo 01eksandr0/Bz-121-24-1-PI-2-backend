@@ -10,4 +10,10 @@
     <ProjectReference Include="..\TravelAgency.DAL.Abstractions\TravelAgency.DAL.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- реалізації сервісів внутрішні: назовні видно лише інтерфейси, моделі і винятки -->
+    <InternalsVisibleTo Include="TravelAgency.Infrastructure" />
+    <InternalsVisibleTo Include="TravelAgency.BLL.Tests" />
+  </ItemGroup>
+
 </Project>

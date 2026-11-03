@@ -1058,7 +1058,7 @@
       }
     },
     {
-      "name": "25 Забронювати номер",
+      "name": "25 Забронювати люкс (він в готелі один)",
       "event": [
         {
           "listen": "test",
@@ -1100,7 +1100,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"roomId\": 1,\n  \"checkIn\": \"{{checkIn}}\",\n  \"checkOut\": \"{{checkOut}}\",\n  \"guests\": 2\n}",
+          "raw": "{\n  \"roomId\": 3,\n  \"checkIn\": \"{{checkIn}}\",\n  \"checkOut\": \"{{checkOut}}\",\n  \"guests\": 2\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1110,7 +1110,7 @@
       }
     },
     {
-      "name": "26 Той самий номер на ті самі дати",
+      "name": "26 Той самий люкс на ті самі дати",
       "event": [
         {
           "listen": "test",
@@ -1152,7 +1152,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"roomId\": 1,\n  \"checkIn\": \"{{checkIn}}\",\n  \"checkOut\": \"{{checkOut}}\",\n  \"guests\": 1\n}",
+          "raw": "{\n  \"roomId\": 3,\n  \"checkIn\": \"{{checkIn}}\",\n  \"checkOut\": \"{{checkOut}}\",\n  \"guests\": 1\n}",
           "options": {
             "raw": {
               "language": "json"

@@ -11,16 +11,16 @@ namespace TravelAgency.BLL.Internal
         {
             if (checkIn.Date < today)
             {
-                throw new BusinessValidationException("Дата заїзду не може бути в минулому.");
+                throw new ValidationFailedException("Дата заїзду не може бути в минулому.");
             }
             int nights = (checkOut.Date - checkIn.Date).Days;
             if (nights <= 0)
             {
-                throw new BusinessValidationException("Дата виїзду має бути пізніше за дату заїзду.");
+                throw new ValidationFailedException("Дата виїзду має бути пізніше за дату заїзду.");
             }
             if (nights > BusinessRules.MaxHotelNights)
             {
-                throw new BusinessValidationException("Максимальний термін проживання - " + BusinessRules.MaxHotelNights + " ночей.");
+                throw new ValidationFailedException("Максимальний термін проживання - " + BusinessRules.MaxHotelNights + " ночей.");
             }
             return nights;
         }

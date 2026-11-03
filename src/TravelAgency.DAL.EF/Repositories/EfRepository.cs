@@ -30,7 +30,7 @@ namespace TravelAgency.DAL.EF.Repositories
             return WithIncludes(includes).ToList();
         }
 
-        public IReadOnlyList<TEntity> Find(
+        public IReadOnlyList<TEntity> FindAll(
             Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, object>>[] includes)
         {

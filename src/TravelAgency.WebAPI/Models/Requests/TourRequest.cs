@@ -12,7 +12,7 @@ namespace TravelAgency.WebAPI.Models.Requests
 
         public string Description { get; set; }
 
-        [Required, EnumDataType(typeof(TourKind))]
+        [Required, EnumDataType(typeof(TourType))]
         public string Type { get; set; }
 
         [Required]
