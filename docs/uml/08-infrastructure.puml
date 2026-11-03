@@ -13,15 +13,18 @@ class BusinessLogicModule {
   # Load(builder)
 }
 class "Program.cs (WebAPI)" as P
+class DatabaseSetup <<static>> {
+  + EnsureCreated(connectionString)
+}
 Module <|-- DataAccessModule
 Module <|-- BusinessLogicModule
 P ..> DataAccessModule
 P ..> BusinessLogicModule
+P ..> DatabaseSetup : після Build()
 note right of DataAccessModule
   DbContextOptions — SingleInstance
   TravelAgencyContext — InstancePerLifetimeScope
   EfUnitOfWork as IUnitOfWork — InstancePerLifetimeScope
-  BuildCallback: EnsureCreated
 end note
 note right of BusinessLogicModule
   *Service → AsImplementedInterfaces,

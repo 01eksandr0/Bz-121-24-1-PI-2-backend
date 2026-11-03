@@ -20,14 +20,16 @@ class EfRepositoryProvider <<internal>> {
   - _repositories : Dictionary<Type, object>
   + Get<TEntity>()
 }
-class EfUnitOfWork {
+class EfUnitOfWork <<internal>> {
   - _context
   - _repositories
+  + ExecuteInTransaction(action) : Serializable
 }
 interface "IEntityTypeConfiguration<T>" as CFG <<EF Core>>
 class "UserConfiguration\nTourConfiguration\n... (10 класів)" as Cfgs <<internal>>
 class ConfigurationConstants <<static>>
-class DatabaseInitializer <<static>> {
+class EntityLimits <<DAL.Abstractions>>
+class DatabaseInitializer <<static, internal>> {
   + CreateOptions(connectionString)
   + EnsureCreated(options)
 }
@@ -42,6 +44,7 @@ EfRepositoryProvider ..> R : створює, кешує
 CFG <|.. Cfgs
 TravelAgencyContext ..> Cfgs : застосовує
 Cfgs ..> ConfigurationConstants
+ConfigurationConstants ..> EntityLimits
 DatabaseInitializer ..> DemoDataSeeder
 DatabaseInitializer ..> TravelAgencyContext
 DesignTimeContextFactory ..> DatabaseInitializer

@@ -21,15 +21,30 @@ ASP.NET Core 8 WebAPI + багатошарова архітектура + EF Cor
 
 ## Запуск
 
-Потрібні .NET 8 SDK і SQL Server (LocalDB встановлюється разом із Visual Studio).
+Потрібні .NET 8 SDK і Docker (SQL Server 2022 запускається в контейнері; на Apple Silicon у Docker Desktop
+увімкнути «Use Rosetta for x86_64/amd64 emulation»).
 
+    docker compose up -d
     dotnet run --project src/TravelAgency.WebAPI
 
 - API: http://localhost:5080/api/tours
 - Swagger: http://localhost:5080/swagger (кнопка **Authorize** — вставити токен з `/api/auth/login`)
 
 База `TravelAgencyDb` створюється автоматично при першому запуску і заповнюється демо-даними.
-Рядок підключення — `appsettings.json` → `ConnectionStrings:TravelAgency`.
+Рядок підключення — `appsettings.json` → `ConnectionStrings:TravelAgency` (за замовчуванням — контейнер з `docker-compose.yml`).
+Після зміни моделі даних базу треба створити заново: `docker compose down -v && docker compose up -d`.
+
+### Авторизація
+
+- Доступ до дії за роллю — `[Authorize(Roles = ...)]` у PL. Роль у JWT на кожному запиті звіряється з БД
+  (`TokenRoleValidator`): якщо адміністратор змінив роль, старий токен отримує 401 і треба увійти знову.
+- Правила щодо конкретного об'єкта (скасувати можна лише своє бронювання, не можна змінити власну роль) — у BLL.
+
+### Бронювання і паралельні запити
+
+Перевірка вільних місць і запис бронювання виконуються в одній транзакції `SERIALIZABLE`
+(`IUnitOfWork.ExecuteInTransaction`), тож два одночасні запити не займуть останнє місце двічі:
+другий отримає 409. `Room` — це категорія номерів, `Quantity` — скільки таких номерів у готелі.
 
 ### Демо-користувачі
 

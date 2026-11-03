@@ -18,20 +18,20 @@ participant "ExceptionHandling\nMiddleware" as X
 V -> H : tourBookingsApi.book({tourId, persons})
 H -> J : POST /api/tour-bookings\nAuthorization: Bearer <JWT>
 J -> J : перевірка підпису, терміну, ролі
+J -> J : TokenRoleValidator: роль у токені = роль у БД?
 J -> C : Book(request)
 C -> C : request.ToModel(), User.GetUserId()
-C -> S : Book(userId, BookTourModel)
+C -> S : Book(userId, TourBookingInputModel)
 S -> U : Users.GetById, Tours.GetById
 U -> DB : SELECT
 S -> S : тур у майбутньому? немає активного бронювання?\nвільних місць ≥ persons?
 alt порушено правило
-  S --> X : BusinessConflictException
+  S --> X : ConflictException
   X --> H : 409 ProblemDetails {detail}
   H --> V : Error(detail) → ErrorAlert
 else все гаразд
-  S -> U : TourBookings.Add(booking)
-  S -> U : SaveChanges()
-  U -> DB : INSERT
+  S -> U : ExecuteInTransaction(перевірка місць + Add + SaveChanges)
+  U -> DB : SERIALIZABLE: SELECT + INSERT, COMMIT
   S --> C : TourBookingModel
   C --> H : 201 Created + TourBookingResponse
   H --> V : дані бронювання
