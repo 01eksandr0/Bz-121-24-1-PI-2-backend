@@ -13,7 +13,7 @@ namespace TravelAgency.WebAPI.Models.Requests
 
         public int? RegionId { get; set; }
 
-        [EnumDataType(typeof(TourKind))]
+        [EnumDataType(typeof(TourType))]
         public string Type { get; set; }
 
         public bool HotOnly { get; set; }

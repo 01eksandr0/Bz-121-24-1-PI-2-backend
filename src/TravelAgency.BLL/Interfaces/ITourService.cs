@@ -5,7 +5,7 @@ namespace TravelAgency.BLL.Interfaces
 {
     public interface ITourService
     {
-        IReadOnlyList<TourModel> Search(TourFilterModel filter);
+        IReadOnlyList<TourModel> Search(TourSearchModel filter);
 
         TourModel GetById(int id);
 

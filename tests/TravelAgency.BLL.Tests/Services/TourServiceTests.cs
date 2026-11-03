@@ -1,6 +1,5 @@
 using System.Linq;
 using TravelAgency.BLL.Exceptions;
-using TravelAgency.BLL.Models;
 using TravelAgency.BLL.Models.Bookings;
 using TravelAgency.BLL.Models.Tours;
 using TravelAgency.BLL.Services;
@@ -26,7 +25,7 @@ namespace TravelAgency.BLL.Tests.Services
             {
                 Title = "Новий тур до Анталії",
                 Description = "Опис",
-                Type = TourKind.Beach,
+                Type = Models.TourType.Beach,
                 RegionId = TestData.Antalya,
                 StartDate = TestData.Today.AddDays(30),
                 EndDate = TestData.Today.AddDays(37),
@@ -40,7 +39,7 @@ namespace TravelAgency.BLL.Tests.Services
         public void Search_NoFilters_ReturnsOnlyFutureToursSortedByStartDate()
         {
             // Arrange
-            var filter = new TourFilterModel();
+            var filter = new TourSearchModel();
 
             // Act
             var result = _service.Search(filter);
@@ -53,7 +52,7 @@ namespace TravelAgency.BLL.Tests.Services
         public void Search_HotOnly_ReturnsDiscountedToursWithFinalPrice()
         {
             // Arrange
-            var filter = new TourFilterModel { HotOnly = true };
+            var filter = new TourSearchModel { HotOnly = true };
 
             // Act
             var result = _service.Search(filter);
@@ -68,7 +67,7 @@ namespace TravelAgency.BLL.Tests.Services
         public void Search_ByCountryTypeAndText_AppliesAllFilters()
         {
             // Arrange
-            var filter = new TourFilterModel { CountryId = TestData.Turkey, Type = TourKind.Beach, Text = "ВКЛЮЧЕНО" };
+            var filter = new TourSearchModel { CountryId = TestData.Turkey, Type = Models.TourType.Beach, Text = "ВКЛЮЧЕНО" };
 
             // Act
             var result = _service.Search(filter);
@@ -81,7 +80,7 @@ namespace TravelAgency.BLL.Tests.Services
         public void Search_MaxPrice_UsesPriceWithDiscount()
         {
             // Arrange
-            var filter = new TourFilterModel { MaxPrice = 850m, SortBy = TourSortOrder.PriceDescending };
+            var filter = new TourSearchModel { MaxPrice = 850m, SortBy = Models.TourSortOrder.PriceDescending };
 
             // Act
             var result = _service.Search(filter);
@@ -95,7 +94,7 @@ namespace TravelAgency.BLL.Tests.Services
         {
             // Arrange
             _uow.TourBookings.Add(new TourBooking { TourId = TestData.SmallTour, UserId = TestData.Olena, Persons = 2, Status = BookingStatus.Active });
-            var filter = new TourFilterModel { OnlyAvailable = true };
+            var filter = new TourSearchModel { OnlyAvailable = true };
 
             // Act
             var result = _service.Search(filter);
@@ -138,7 +137,7 @@ namespace TravelAgency.BLL.Tests.Services
             input.StartDate = TestData.Today.AddDays(-1);
 
             // Act & Assert
-            Assert.Throws<BusinessValidationException>(() => _service.Create(input));
+            Assert.Throws<ValidationFailedException>(() => _service.Create(input));
             Assert.Equal(0, _uow.SaveCount);
         }
 
@@ -150,7 +149,7 @@ namespace TravelAgency.BLL.Tests.Services
             input.EndDate = input.StartDate;
 
             // Act & Assert
-            Assert.Throws<BusinessValidationException>(() => _service.Create(input));
+            Assert.Throws<ValidationFailedException>(() => _service.Create(input));
         }
 
         [Fact]
@@ -161,7 +160,7 @@ namespace TravelAgency.BLL.Tests.Services
             input.DiscountPercent = 95;
 
             // Act & Assert
-            Assert.Throws<BusinessValidationException>(() => _service.Create(input));
+            Assert.Throws<ValidationFailedException>(() => _service.Create(input));
         }
 
         [Fact]
@@ -176,15 +175,28 @@ namespace TravelAgency.BLL.Tests.Services
         }
 
         [Fact]
+        public void Update_TourAlreadyStarted_ThrowsConflictAndDoesNotSave()
+        {
+            // Arrange
+            var input = ValidInput();
+
+            // Act
+            Assert.Throws<ConflictException>(() => _service.Update(TestData.PastTour, input));
+
+            // Assert
+            Assert.Equal(0, _uow.SaveCount);
+        }
+
+        [Fact]
         public void Update_CapacityBelowBooked_ThrowsConflict()
         {
             // Arrange
-            new TourBookingService(_uow, new FixedClock()).Book(TestData.Olena, new BookTourModel { TourId = TestData.HotTour, Persons = 5 });
+            new TourBookingService(_uow, new FixedClock()).Book(TestData.Olena, new TourBookingInputModel { TourId = TestData.HotTour, Persons = 5 });
             var input = ValidInput();
             input.Capacity = 4;
 
             // Act & Assert
-            Assert.Throws<BusinessConflictException>(() => _service.Update(TestData.HotTour, input));
+            Assert.Throws<ConflictException>(() => _service.Update(TestData.HotTour, input));
         }
 
         [Fact]
@@ -220,10 +232,10 @@ namespace TravelAgency.BLL.Tests.Services
         public void Delete_TourWithBookings_ThrowsConflictAndKeepsTour()
         {
             // Arrange
-            new TourBookingService(_uow, new FixedClock()).Book(TestData.Olena, new BookTourModel { TourId = TestData.HotTour, Persons = 1 });
+            new TourBookingService(_uow, new FixedClock()).Book(TestData.Olena, new TourBookingInputModel { TourId = TestData.HotTour, Persons = 1 });
 
             // Act & Assert
-            Assert.Throws<BusinessConflictException>(() => _service.Delete(TestData.HotTour));
+            Assert.Throws<ConflictException>(() => _service.Delete(TestData.HotTour));
             Assert.NotNull(_uow.Tours.GetById(TestData.HotTour));
         }
     }

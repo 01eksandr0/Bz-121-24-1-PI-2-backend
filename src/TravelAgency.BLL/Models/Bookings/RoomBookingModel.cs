@@ -26,7 +26,7 @@ namespace TravelAgency.BLL.Models.Bookings
 
         public decimal TotalPrice { get; set; }
 
-        public BookingState Status { get; set; }
+        public BookingStatus Status { get; set; }
 
         public DateTime CreatedAt { get; set; }
     }

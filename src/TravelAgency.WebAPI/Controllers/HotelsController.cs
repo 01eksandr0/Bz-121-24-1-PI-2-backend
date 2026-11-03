@@ -37,7 +37,7 @@ namespace TravelAgency.WebAPI.Controllers
 
         /// <summary>GET api/hotels/5/available-rooms?checkIn=2025-07-01&amp;checkOut=2025-07-05&amp;guests=2</summary>
         [HttpGet("{id:int}/available-rooms")]
-        public ActionResult<List<HotelRoomResponse>> GetAvailableRooms(int id, [FromQuery] AvailableRoomsQuery query)
+        public ActionResult<List<RoomResponse>> GetAvailableRooms(int id, [FromQuery] AvailableRoomsQuery query)
         {
             return _hotels.GetAvailableRooms(id, query.CheckIn.Value, query.CheckOut.Value, query.Guests)
                 .ToResponses(r => r.ToResponse());
@@ -55,9 +55,9 @@ namespace TravelAgency.WebAPI.Controllers
         /// <summary>POST api/hotels/5/rooms</summary>
         [HttpPost("{id:int}/rooms")]
         [Authorize(Roles = ApiRoles.Staff)]
-        public ActionResult<HotelRoomResponse> AddRoom(int id, [FromBody] HotelRoomRequest request)
+        public ActionResult<RoomResponse> AddRoom(int id, [FromBody] RoomRequest request)
         {
-            HotelRoomResponse room = _hotels.AddRoom(id, request.ToModel()).ToResponse();
+            RoomResponse room = _hotels.AddRoom(id, request.ToModel()).ToResponse();
             return CreatedAtAction(nameof(GetById), new { id }, room);
         }
     }

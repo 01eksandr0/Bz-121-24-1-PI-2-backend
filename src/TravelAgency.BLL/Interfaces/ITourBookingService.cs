@@ -5,7 +5,7 @@ namespace TravelAgency.BLL.Interfaces
 {
     public interface ITourBookingService
     {
-        TourBookingModel Book(int userId, BookTourModel model);
+        TourBookingModel Book(int userId, TourBookingInputModel model);
 
         IReadOnlyList<TourBookingModel> GetByUser(int userId);
 

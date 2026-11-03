@@ -13,18 +13,18 @@ namespace TravelAgency.WebAPI.Middleware
     /// Єдине місце обробки винятків: бізнес-винятки перетворюються на відповідні HTTP-коди
     /// у форматі ProblemDetails (RFC 7807), а неочікувані - логуються і повертаються як 500 без деталей.
     /// </summary>
-    public class ExceptionHandlingMiddleware
+    internal class ExceptionHandlingMiddleware
     {
         private const string ProblemContentType = "application/problem+json";
         private const string InternalErrorMessage = "Внутрішня помилка сервера. Спробуйте пізніше.";
 
         private static readonly Dictionary<Type, int> StatusByException = new Dictionary<Type, int>
         {
-            { typeof(BusinessValidationException), StatusCodes.Status400BadRequest },
+            { typeof(ValidationFailedException), StatusCodes.Status400BadRequest },
             { typeof(InvalidCredentialsException), StatusCodes.Status401Unauthorized },
             { typeof(AccessDeniedException), StatusCodes.Status403Forbidden },
             { typeof(EntityNotFoundException), StatusCodes.Status404NotFound },
-            { typeof(BusinessConflictException), StatusCodes.Status409Conflict }
+            { typeof(ConflictException), StatusCodes.Status409Conflict }
         };
 
         private readonly RequestDelegate _next;

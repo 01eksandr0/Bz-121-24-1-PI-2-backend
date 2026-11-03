@@ -17,10 +17,10 @@ namespace TravelAgency.BLL.Tests.Services
         }
 
         [Fact]
-        public void Book_FreeSeats_CalculatesTotalPrice()
+        public void Book_FreePlaces_CalculatesTotalPrice()
         {
             // Arrange
-            var request = new BookTicketModel { TripId = TestData.Flight, Seats = 2 };
+            var request = new TicketBookingInputModel { TripId = TestData.Flight, Seats = 2 };
 
             // Act
             var booking = _service.Book(TestData.Olena, request);
@@ -34,18 +34,18 @@ namespace TravelAgency.BLL.Tests.Services
         public void Book_MoreSeatsThanLeft_ThrowsConflict()
         {
             // Arrange
-            _service.Book(TestData.Olena, new BookTicketModel { TripId = TestData.Flight, Seats = 2 });
+            _service.Book(TestData.Olena, new TicketBookingInputModel { TripId = TestData.Flight, Seats = 2 });
 
             // Act & Assert
-            Assert.Throws<BusinessConflictException>(() =>
-                _service.Book(TestData.Petro, new BookTicketModel { TripId = TestData.Flight, Seats = 2 }));
+            Assert.Throws<ConflictException>(() =>
+                _service.Book(TestData.Petro, new TicketBookingInputModel { TripId = TestData.Flight, Seats = 2 }));
         }
 
         [Fact]
         public void Cancel_OtherCustomersTicket_ThrowsAccessDenied()
         {
             // Arrange
-            var booking = _service.Book(TestData.Olena, new BookTicketModel { TripId = TestData.Flight, Seats = 1 });
+            var booking = _service.Book(TestData.Olena, new TicketBookingInputModel { TripId = TestData.Flight, Seats = 1 });
 
             // Act & Assert
             Assert.Throws<AccessDeniedException>(() => _service.Cancel(booking.Id, TestData.Petro));

@@ -17,9 +17,9 @@ namespace TravelAgency.BLL.Tests.Services
             _service = new RoomBookingService(_uow, new FixedClock());
         }
 
-        private static BookRoomModel Request(int fromDay, int toDay, int guests = 2)
+        private static RoomBookingInputModel Request(int fromDay, int toDay, int guests = 2)
         {
-            return new BookRoomModel
+            return new RoomBookingInputModel
             {
                 RoomId = TestData.DoubleRoom,
                 CheckIn = TestData.Today.AddDays(fromDay),
@@ -50,7 +50,22 @@ namespace TravelAgency.BLL.Tests.Services
             _service.Book(TestData.Olena, Request(5, 8));
 
             // Act & Assert
-            Assert.Throws<BusinessConflictException>(() => _service.Book(TestData.Petro, Request(7, 10)));
+            Assert.Throws<ConflictException>(() => _service.Book(TestData.Petro, Request(7, 10)));
+        }
+
+        [Fact]
+        public void Book_CategoryWithTwoRooms_AcceptsTwoOverlappingBookingsButNotThird()
+        {
+            // Arrange
+            _uow.Rooms.Raw(TestData.DoubleRoom).Quantity = 2;
+            _service.Book(TestData.Olena, Request(5, 8));
+
+            // Act
+            var second = _service.Book(TestData.Petro, Request(6, 9));
+
+            // Assert
+            Assert.Equal(TestData.DoubleRoom, second.RoomId);
+            Assert.Throws<ConflictException>(() => _service.Book(TestData.Manager, Request(7, 8)));
         }
 
         [Fact]
@@ -73,7 +88,7 @@ namespace TravelAgency.BLL.Tests.Services
             var request = Request(5, 8, guests: 3);
 
             // Act & Assert
-            Assert.Throws<BusinessValidationException>(() => _service.Book(TestData.Olena, request));
+            Assert.Throws<ValidationFailedException>(() => _service.Book(TestData.Olena, request));
         }
 
         [Fact]
@@ -83,7 +98,7 @@ namespace TravelAgency.BLL.Tests.Services
             var request = Request(8, 5);
 
             // Act & Assert
-            Assert.Throws<BusinessValidationException>(() => _service.Book(TestData.Olena, request));
+            Assert.Throws<ValidationFailedException>(() => _service.Book(TestData.Olena, request));
         }
 
         [Fact]

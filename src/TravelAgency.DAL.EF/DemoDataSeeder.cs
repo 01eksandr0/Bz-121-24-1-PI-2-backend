@@ -49,16 +49,17 @@ namespace TravelAgency.DAL.EF
                 NewTour("Трускавець: оздоровлення", "Мінеральні води, процедури, харчування.", TourType.Health, carpathians, today.AddDays(28), 10, 640m, 0, 15));
 
             var rixos = new Hotel { Name = "Rixos Downtown", Description = "Пляжний готель, басейни, спа.", Stars = 5, Region = antalya };
-            rixos.Rooms.Add(new HotelRoom { Name = "Стандарт (2 особи)", Capacity = 2, PricePerNight = 120m });
-            rixos.Rooms.Add(new HotelRoom { Name = "Сімейний (4 особи)", Capacity = 4, PricePerNight = 210m });
+            rixos.Rooms.Add(new Room { Name = "Стандарт (2 особи)", Capacity = 2, Quantity = 10, PricePerNight = 120m });
+            rixos.Rooms.Add(new Room { Name = "Сімейний (4 особи)", Capacity = 4, Quantity = 4, PricePerNight = 210m });
+            rixos.Rooms.Add(new Room { Name = "Люкс з видом на море", Capacity = 2, Quantity = 1, PricePerNight = 350m });
             var roma = new Hotel { Name = "Hotel Roma Centro", Description = "5 хвилин до Колізею.", Stars = 4, Region = rome };
-            roma.Rooms.Add(new HotelRoom { Name = "Одномісний", Capacity = 1, PricePerNight = 95m });
-            roma.Rooms.Add(new HotelRoom { Name = "Двомісний", Capacity = 2, PricePerNight = 140m });
+            roma.Rooms.Add(new Room { Name = "Одномісний", Capacity = 1, Quantity = 5, PricePerNight = 95m });
+            roma.Rooms.Add(new Room { Name = "Двомісний", Capacity = 2, Quantity = 8, PricePerNight = 140m });
             var bukovel = new Hotel { Name = "Буковель Шале", Description = "Біля підйомника №1.", Stars = 3, Region = carpathians };
-            bukovel.Rooms.Add(new HotelRoom { Name = "Двомісний", Capacity = 2, PricePerNight = 60m });
+            bukovel.Rooms.Add(new Room { Name = "Двомісний", Capacity = 2, Quantity = 6, PricePerNight = 60m });
             context.Hotels.AddRange(rixos, roma, bukovel);
 
-            context.TransportTrips.AddRange(
+            context.Trips.AddRange(
                 NewTrip(TransportType.Plane, "Київ", "Анталія", today.AddDays(7).AddHours(9), 3, 180m, 150),
                 NewTrip(TransportType.Plane, "Київ", "Рим", today.AddDays(35).AddHours(7), 3, 210m, 120),
                 NewTrip(TransportType.Train, "Київ", "Львів", today.AddDays(5).AddHours(6), 5, 25m, 300),
@@ -84,10 +85,10 @@ namespace TravelAgency.DAL.EF
             };
         }
 
-        private static TransportTrip NewTrip(TransportType type, string from, string to,
-            DateTime departure, int durationHours, decimal price, int seats)
+        private static Trip NewTrip(TransportType type, string from, string to,
+            DateTime departure, int durationHours, decimal price, int capacity)
         {
-            return new TransportTrip
+            return new Trip
             {
                 Type = type,
                 FromCity = from,
@@ -95,7 +96,7 @@ namespace TravelAgency.DAL.EF
                 DepartureAt = departure,
                 ArrivalAt = departure.AddHours(durationHours),
                 Price = price,
-                SeatsTotal = seats
+                Capacity = capacity
             };
         }
     }

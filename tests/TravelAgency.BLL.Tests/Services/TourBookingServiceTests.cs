@@ -1,5 +1,4 @@
 using TravelAgency.BLL.Exceptions;
-using TravelAgency.BLL.Models;
 using TravelAgency.BLL.Models.Bookings;
 using TravelAgency.BLL.Services;
 using TravelAgency.BLL.Tests.Fakes;
@@ -20,20 +19,20 @@ namespace TravelAgency.BLL.Tests.Services
 
         private TourBookingModel BookHotTour(int userId, int persons)
         {
-            return _service.Book(userId, new BookTourModel { TourId = TestData.HotTour, Persons = persons });
+            return _service.Book(userId, new TourBookingInputModel { TourId = TestData.HotTour, Persons = persons });
         }
 
         [Fact]
         public void Book_ValidRequest_CreatesActiveBookingWithDiscountedPrice()
         {
             // Arrange
-            var request = new BookTourModel { TourId = TestData.HotTour, Persons = 2 };
+            var request = new TourBookingInputModel { TourId = TestData.HotTour, Persons = 2 };
 
             // Act
             var booking = _service.Book(TestData.Olena, request);
 
             // Assert
-            Assert.Equal(BookingState.Active, booking.Status);
+            Assert.Equal(Models.BookingStatus.Active, booking.Status);
             Assert.Equal(1600m, booking.TotalPrice);
             Assert.Equal("Олена", booking.UserName);
             Assert.Equal(1, _uow.SaveCount);
@@ -43,7 +42,7 @@ namespace TravelAgency.BLL.Tests.Services
         public void Book_UnregisteredUser_ThrowsAccessDenied()
         {
             // Arrange
-            var request = new BookTourModel { TourId = TestData.HotTour, Persons = 1 };
+            var request = new TourBookingInputModel { TourId = TestData.HotTour, Persons = 1 };
 
             // Act & Assert
             Assert.Throws<AccessDeniedException>(() => _service.Book(TestData.UnknownUser, request));
@@ -53,20 +52,20 @@ namespace TravelAgency.BLL.Tests.Services
         public void Book_MorePersonsThanFreePlaces_ThrowsConflict()
         {
             // Arrange
-            var request = new BookTourModel { TourId = TestData.SmallTour, Persons = 3 };
+            var request = new TourBookingInputModel { TourId = TestData.SmallTour, Persons = 3 };
 
             // Act & Assert
-            Assert.Throws<BusinessConflictException>(() => _service.Book(TestData.Olena, request));
+            Assert.Throws<ConflictException>(() => _service.Book(TestData.Olena, request));
         }
 
         [Fact]
         public void Book_PastTour_ThrowsConflict()
         {
             // Arrange
-            var request = new BookTourModel { TourId = TestData.PastTour, Persons = 1 };
+            var request = new TourBookingInputModel { TourId = TestData.PastTour, Persons = 1 };
 
             // Act & Assert
-            Assert.Throws<BusinessConflictException>(() => _service.Book(TestData.Olena, request));
+            Assert.Throws<ConflictException>(() => _service.Book(TestData.Olena, request));
         }
 
         [Fact]
@@ -76,17 +75,17 @@ namespace TravelAgency.BLL.Tests.Services
             BookHotTour(TestData.Olena, 1);
 
             // Act & Assert
-            Assert.Throws<BusinessConflictException>(() => BookHotTour(TestData.Olena, 1));
+            Assert.Throws<ConflictException>(() => BookHotTour(TestData.Olena, 1));
         }
 
         [Fact]
         public void Book_ZeroPersons_ThrowsValidation()
         {
             // Arrange
-            var request = new BookTourModel { TourId = TestData.HotTour, Persons = 0 };
+            var request = new TourBookingInputModel { TourId = TestData.HotTour, Persons = 0 };
 
             // Act & Assert
-            Assert.Throws<BusinessValidationException>(() => _service.Book(TestData.Olena, request));
+            Assert.Throws<ValidationFailedException>(() => _service.Book(TestData.Olena, request));
         }
 
         [Fact]
@@ -144,17 +143,17 @@ namespace TravelAgency.BLL.Tests.Services
         public void Cancel_CustomerAfterDeadline_ThrowsConflict()
         {
             // Arrange: тур через 2 дні, а скасувати можна не пізніше ніж за 3 дні
-            var booking = _service.Book(TestData.Olena, new BookTourModel { TourId = TestData.SmallTour, Persons = 1 });
+            var booking = _service.Book(TestData.Olena, new TourBookingInputModel { TourId = TestData.SmallTour, Persons = 1 });
 
             // Act & Assert
-            Assert.Throws<BusinessConflictException>(() => _service.Cancel(booking.Id, TestData.Olena));
+            Assert.Throws<ConflictException>(() => _service.Cancel(booking.Id, TestData.Olena));
         }
 
         [Fact]
         public void Cancel_ManagerAfterCustomerDeadline_IsAllowed()
         {
             // Arrange
-            var booking = _service.Book(TestData.Olena, new BookTourModel { TourId = TestData.SmallTour, Persons = 1 });
+            var booking = _service.Book(TestData.Olena, new TourBookingInputModel { TourId = TestData.SmallTour, Persons = 1 });
 
             // Act
             _service.Cancel(booking.Id, TestData.Manager);
@@ -171,21 +170,21 @@ namespace TravelAgency.BLL.Tests.Services
             _service.Cancel(booking.Id, TestData.Olena);
 
             // Act & Assert
-            Assert.Throws<BusinessConflictException>(() => _service.Cancel(booking.Id, TestData.Olena));
+            Assert.Throws<ConflictException>(() => _service.Cancel(booking.Id, TestData.Olena));
         }
 
         [Fact]
         public void Cancel_FreesPlacesForOtherCustomers()
         {
             // Arrange
-            var booking = _service.Book(TestData.Olena, new BookTourModel { TourId = TestData.SmallTour, Persons = 2 });
+            var booking = _service.Book(TestData.Olena, new TourBookingInputModel { TourId = TestData.SmallTour, Persons = 2 });
             _service.Cancel(booking.Id, TestData.Manager);
 
             // Act
-            var second = _service.Book(TestData.Petro, new BookTourModel { TourId = TestData.SmallTour, Persons = 2 });
+            var second = _service.Book(TestData.Petro, new TourBookingInputModel { TourId = TestData.SmallTour, Persons = 2 });
 
             // Assert
-            Assert.Equal(BookingState.Active, second.Status);
+            Assert.Equal(Models.BookingStatus.Active, second.Status);
         }
     }
 }

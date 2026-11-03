@@ -2,7 +2,7 @@ using System;
 
 namespace TravelAgency.BLL.Common
 {
-    public class SystemClock : IClock
+    internal class SystemClock : IClock
     {
         public DateTime Now => DateTime.Now;
 

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using TravelAgency.BLL.Common;
 using TravelAgency.BLL.Exceptions;
@@ -14,78 +12,49 @@ using TravelAgency.DAL.Abstractions.Interfaces;
 namespace TravelAgency.BLL.Services
 {
     /// <summary>Підсистема бронювання номерів у готелях.</summary>
-    public class RoomBookingService : IRoomBookingService
+    internal class RoomBookingService : BookingServiceBase<RoomBooking, RoomBookingModel>, IRoomBookingService
     {
-        private const string EntityName = "Бронювання номера";
-        private const int CancellationDeadlineDays = 0;
+        private static readonly Expression<Func<RoomBooking, object>>[] Includes = { b => b.Room.Hotel, b => b.User };
 
-        private static readonly Expression<Func<RoomBooking, object>>[] Details = { b => b.Room.Hotel, b => b.User };
-
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IClock _clock;
-
-        public RoomBookingService(IUnitOfWork unitOfWork, IClock clock)
+        public RoomBookingService(IUnitOfWork unitOfWork, IClock clock) : base(unitOfWork, clock)
         {
-            _unitOfWork = unitOfWork;
-            _clock = clock;
         }
 
-        private IRepository<RoomBooking> Bookings => _unitOfWork.Repository<RoomBooking>();
+        protected override string EntityName => "Бронювання номера";
 
-        public RoomBookingModel Book(int userId, BookRoomModel model)
+        protected override Expression<Func<RoomBooking, object>>[] Details => Includes;
+
+        protected override int CancellationDeadlineDays => BusinessRules.RoomCancellationDeadlineDays;
+
+        public RoomBookingModel Book(int userId, RoomBookingInputModel model)
         {
-            User user = UserGuard.GetRegistered(_unitOfWork, userId);
-            HotelRoom room = _unitOfWork.Repository<HotelRoom>().GetRequired(model.RoomId, "Номер");
-            int nights = StayPeriod.Validate(model.CheckIn, model.CheckOut, _clock.Today);
-            Guard.InRange(model.Guests, 1, room.Capacity, "Кількість гостей");
+            User user = UserGuard.GetRegistered(UnitOfWork, userId);
+            Room room = UnitOfWork.Repository<Room>().GetRequired(model.RoomId, "Номер");
+            int nights = StayPeriod.Validate(model.CheckIn, model.CheckOut, Clock.Today);
+            Guard.InRange(model.Guests, BusinessRules.MinQuantity, room.Capacity, "Кількість гостей");
 
-            DateTime checkIn = model.CheckIn.Date;
-            DateTime checkOut = model.CheckOut.Date;
-            // періоди [заїзд; виїзд) перетинаються, якщо кожен починається раніше, ніж закінчується інший
-            if (Bookings.Any(b => b.RoomId == room.Id
-                                  && b.Status == BookingStatus.Active
-                                  && b.CheckIn < checkOut
-                                  && checkIn < b.CheckOut))
+            RoomBooking booking = UnitOfWork.InTransaction(() =>
             {
-                throw new BusinessConflictException("Номер уже заброньовано на ці дати.");
-            }
-
-            var booking = new RoomBooking
-            {
-                RoomId = room.Id,
-                UserId = user.Id,
-                CheckIn = checkIn,
-                CheckOut = checkOut,
-                Guests = model.Guests,
-                TotalPrice = room.PricePerNight * nights,
-                Status = BookingStatus.Active,
-                CreatedAt = _clock.Now
-            };
-            Bookings.Add(booking);
-            _unitOfWork.SaveChanges();
-            return Bookings.GetRequired(booking.Id, EntityName, Details).ToModel();
+                int busy = Occupancy.Rooms(UnitOfWork, new[] { room.Id }, model.CheckIn, model.CheckOut)[room.Id];
+                if (busy >= room.Quantity)
+                {
+                    throw new ConflictException("Усі номери цієї категорії на ці дати вже заброньовано.");
+                }
+                return Add(new RoomBooking
+                {
+                    RoomId = room.Id,
+                    UserId = user.Id,
+                    CheckIn = model.CheckIn.Date,
+                    CheckOut = model.CheckOut.Date,
+                    Guests = model.Guests,
+                    TotalPrice = room.PricePerNight * nights
+                });
+            });
+            return Reload(booking);
         }
 
-        public IReadOnlyList<RoomBookingModel> GetByUser(int userId)
-        {
-            return ToSortedModels(Bookings.Find(b => b.UserId == userId, Details));
-        }
+        protected override DateTime StartOf(RoomBooking booking) => booking.CheckIn;
 
-        public IReadOnlyList<RoomBookingModel> GetAll()
-        {
-            return ToSortedModels(Bookings.GetAll(Details));
-        }
-
-        public void Cancel(int bookingId, int userId)
-        {
-            User user = UserGuard.GetRegistered(_unitOfWork, userId);
-            RoomBooking booking = Bookings.GetRequired(bookingId, EntityName, Details);
-            BookingCancellation.Cancel(_unitOfWork, booking, user, booking.CheckIn, _clock.Today, CancellationDeadlineDays);
-        }
-
-        private static IReadOnlyList<RoomBookingModel> ToSortedModels(IEnumerable<RoomBooking> bookings)
-        {
-            return bookings.OrderByDescending(b => b.CreatedAt).Select(b => b.ToModel()).ToList();
-        }
+        protected override RoomBookingModel ToModel(RoomBooking booking) => booking.ToModel();
     }
 }

@@ -5,8 +5,8 @@ namespace TravelAgency.BLL.Interfaces
     /// <summary>Реєстрація і перевірка облікових даних. Токен видає рівень представлення.</summary>
     public interface IAuthService
     {
-        UserModel Register(RegisterModel model);
+        UserModel Register(RegisterInputModel model);
 
-        UserModel Login(LoginModel model);
+        UserModel Login(LoginInputModel model);
     }
 }

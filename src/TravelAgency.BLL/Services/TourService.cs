@@ -7,7 +7,6 @@ using TravelAgency.BLL.Exceptions;
 using TravelAgency.BLL.Interfaces;
 using TravelAgency.BLL.Internal;
 using TravelAgency.BLL.Mapping;
-using TravelAgency.BLL.Models;
 using TravelAgency.BLL.Models.Tours;
 using TravelAgency.DAL.Abstractions.Entities;
 using TravelAgency.DAL.Abstractions.Interfaces;
@@ -15,7 +14,7 @@ using TravelAgency.DAL.Abstractions.Interfaces;
 namespace TravelAgency.BLL.Services
 {
     /// <summary>Підсистеми "додавання/редагування турів" і "виведення турів з фільтрами та пошуком".</summary>
-    public class TourService : ITourService
+    internal class TourService : ITourService
     {
         private const string EntityName = "Тур";
 
@@ -33,7 +32,7 @@ namespace TravelAgency.BLL.Services
         private IRepository<Tour> Tours => _unitOfWork.Repository<Tour>();
 
         /// <summary>Пошук серед турів, які ще не почалися.</summary>
-        public IReadOnlyList<TourModel> Search(TourFilterModel filter)
+        public IReadOnlyList<TourModel> Search(TourSearchModel filter)
         {
             DateTime today = _clock.Today;
             // прапорці замість перевірок на null - так умову однаково виконає і EF (SQL), і будь-яке інше джерело
@@ -48,7 +47,7 @@ namespace TravelAgency.BLL.Services
             bool anyDateTo = !filter.DateTo.HasValue;
             DateTime dateTo = filter.DateTo.HasValue ? filter.DateTo.Value.Date : DateTime.MaxValue;
 
-            IReadOnlyList<Tour> tours = Tours.Find(t =>
+            IReadOnlyList<Tour> tours = Tours.FindAll(t =>
                     t.StartDate >= dateFrom
                     && (anyDateTo || t.StartDate <= dateTo)
                     && (anyCountry || t.Region.CountryId == countryId)
@@ -83,7 +82,7 @@ namespace TravelAgency.BLL.Services
         public TourModel GetById(int id)
         {
             Tour tour = Tours.GetRequired(id, EntityName, Details);
-            return tour.ToModel(BookedPlaces(new[] { id })[id]);
+            return tour.ToModel(Occupancy.TourPlaces(_unitOfWork, new[] { id })[id]);
         }
 
         public TourModel Create(TourInputModel input)
@@ -91,7 +90,7 @@ namespace TravelAgency.BLL.Services
             Validate(input);
             if (input.StartDate.Date <= _clock.Today)
             {
-                throw new BusinessValidationException("Дата початку туру має бути в майбутньому.");
+                throw new ValidationFailedException("Дата початку туру має бути в майбутньому.");
             }
 
             var tour = new Tour();
@@ -104,15 +103,19 @@ namespace TravelAgency.BLL.Services
         public TourModel Update(int id, TourInputModel input)
         {
             Tour tour = Tours.GetRequired(id, EntityName);
+            if (tour.StartDate.Date <= _clock.Today)
+            {
+                throw new ConflictException("Тур уже почався або завершився, його не можна змінювати.");
+            }
             Validate(input);
             if (input.StartDate.Date != tour.StartDate.Date && input.StartDate.Date <= _clock.Today)
             {
-                throw new BusinessValidationException("Нова дата початку туру має бути в майбутньому.");
+                throw new ValidationFailedException("Нова дата початку туру має бути в майбутньому.");
             }
-            int booked = BookedPlaces(new[] { id })[id];
+            int booked = Occupancy.TourPlaces(_unitOfWork, new[] { id })[id];
             if (input.Capacity < booked)
             {
-                throw new BusinessConflictException("Уже заброньовано " + booked + " місць - місткість не може бути меншою.");
+                throw new ConflictException("Уже заброньовано " + booked + " місць - місткість не може бути меншою.");
             }
 
             input.ApplyTo(tour);
@@ -127,7 +130,7 @@ namespace TravelAgency.BLL.Services
             Tour tour = Tours.GetRequired(id, EntityName);
             if (_unitOfWork.Repository<TourBooking>().Any(b => b.TourId == id))
             {
-                throw new BusinessConflictException("Тур має бронювання, тому його не можна видалити.");
+                throw new ConflictException("Тур має бронювання, тому його не можна видалити.");
             }
             Tours.Remove(tour);
             _unitOfWork.SaveChanges();
@@ -138,40 +141,30 @@ namespace TravelAgency.BLL.Services
             Guard.RequiredText(input.Title, "Назва", BusinessRules.MaxTitleLength);
             if (input.Title.Trim().Length < BusinessRules.MinTitleLength)
             {
-                throw new BusinessValidationException("Назва туру має містити щонайменше " + BusinessRules.MinTitleLength + " символів.");
+                throw new ValidationFailedException("Назва туру має містити щонайменше " + BusinessRules.MinTitleLength + " символів.");
             }
             if ((input.Description ?? string.Empty).Length > BusinessRules.MaxDescriptionLength)
             {
-                throw new BusinessValidationException("Опис занадто довгий.");
+                throw new ValidationFailedException("Опис занадто довгий.");
             }
-            if (!Enum.IsDefined(typeof(TourKind), input.Type))
+            if (!Enum.IsDefined(typeof(Models.TourType), input.Type))
             {
-                throw new BusinessValidationException("Невідомий тип туру.");
+                throw new ValidationFailedException("Невідомий тип туру.");
             }
             if (input.EndDate.Date <= input.StartDate.Date)
             {
-                throw new BusinessValidationException("Дата завершення має бути пізніше за дату початку.");
+                throw new ValidationFailedException("Дата завершення має бути пізніше за дату початку.");
             }
             Guard.Positive(input.PricePerPerson, "Ціна");
             Guard.InRange(input.DiscountPercent, 0, BusinessRules.MaxDiscountPercent, "Знижка, %");
-            Guard.InRange(input.Capacity, 1, BusinessRules.MaxTourCapacity, "Кількість місць");
+            Guard.InRange(input.Capacity, BusinessRules.MinQuantity, BusinessRules.MaxTourCapacity, "Кількість місць");
             _unitOfWork.Repository<Region>().GetRequired(input.RegionId, "Регіон");
         }
 
         private IEnumerable<TourModel> ToModels(IReadOnlyList<Tour> tours)
         {
-            Dictionary<int, int> booked = BookedPlaces(tours.Select(t => t.Id).ToList());
+            Dictionary<int, int> booked = Occupancy.TourPlaces(_unitOfWork, tours.Select(t => t.Id).ToList());
             return tours.Select(t => t.ToModel(booked[t.Id]));
-        }
-
-        /// <summary>Скільки місць зайнято активними бронюваннями для кожного туру (один запит на всі тури).</summary>
-        private Dictionary<int, int> BookedPlaces(IReadOnlyCollection<int> tourIds)
-        {
-            List<int> ids = tourIds.ToList();
-            ILookup<int, TourBooking> bookings = _unitOfWork.Repository<TourBooking>()
-                .Find(b => ids.Contains(b.TourId) && b.Status == BookingStatus.Active)
-                .ToLookup(b => b.TourId);
-            return ids.Distinct().ToDictionary(id => id, id => bookings[id].Sum(b => b.Persons));
         }
 
         private static bool ContainsText(TourModel tour, string text)
@@ -180,15 +173,15 @@ namespace TravelAgency.BLL.Services
                 .Any(value => value != null && value.IndexOf(text, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
-        private static IEnumerable<TourModel> Sort(IEnumerable<TourModel> tours, TourSortOrder sortBy)
+        private static IEnumerable<TourModel> Sort(IEnumerable<TourModel> tours, Models.TourSortOrder sortBy)
         {
             switch (sortBy)
             {
-                case TourSortOrder.PriceAscending:
+                case Models.TourSortOrder.PriceAscending:
                     return tours.OrderBy(t => t.FinalPrice);
-                case TourSortOrder.PriceDescending:
+                case Models.TourSortOrder.PriceDescending:
                     return tours.OrderByDescending(t => t.FinalPrice);
-                case TourSortOrder.DiscountDescending:
+                case Models.TourSortOrder.DiscountDescending:
                     return tours.OrderByDescending(t => t.DiscountPercent).ThenBy(t => t.StartDate);
                 default:
                     return tours.OrderBy(t => t.StartDate).ThenBy(t => t.Title);

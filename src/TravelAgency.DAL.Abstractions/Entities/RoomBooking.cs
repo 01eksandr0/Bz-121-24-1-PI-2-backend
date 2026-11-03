@@ -8,7 +8,7 @@ namespace TravelAgency.DAL.Abstractions.Entities
 
         public int RoomId { get; set; }
 
-        public HotelRoom Room { get; set; }
+        public Room Room { get; set; }
 
         public int UserId { get; set; }
 

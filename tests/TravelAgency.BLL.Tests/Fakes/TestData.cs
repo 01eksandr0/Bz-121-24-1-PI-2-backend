@@ -8,7 +8,7 @@ namespace TravelAgency.BLL.Tests.Fakes
     /// Користувачі: 1 Олена (клієнт), 2 Петро (клієнт), 3 Марія (менеджер), 4 Адмін.
     /// Країни: 1 Туреччина (регіон 1 Анталія), 2 Італія (регіон 2 Рим).
     /// Тури: 1 Анталія через 10 днів, 20 місць, знижка 20%; 2 Рим через 2 дні, 2 місця; 3 Рим - минулий.
-    /// Готель 1 в Анталії: номер 1 (2 особи, 100/ніч), номер 2 (4 особи, 180/ніч).
+    /// Готель 1 в Анталії: категорія 1 (2 особи, 100/ніч, 1 номер), категорія 2 (4 особи, 180/ніч, 1 номер).
     /// Рейс 1 Київ - Анталія через 10 днів, 3 місця.
     /// </summary>
     internal static class TestData
@@ -53,14 +53,14 @@ namespace TravelAgency.BLL.Tests.Fakes
             uow.Tours.Add(NewTour("Минулий тур до Риму", TourType.Excursion, Rome, -5, 3, 400m, 0, 10));
 
             uow.Hotels.Add(new Hotel { Name = "Sea Hotel", Stars = 5, RegionId = Antalya });
-            uow.Rooms.Add(new HotelRoom { HotelId = Hotel, Name = "Двомісний", Capacity = 2, PricePerNight = 100m });
-            uow.Rooms.Add(new HotelRoom { HotelId = Hotel, Name = "Сімейний", Capacity = 4, PricePerNight = 180m });
+            uow.Rooms.Add(new Room { HotelId = Hotel, Name = "Двомісний", Capacity = 2, Quantity = 1, PricePerNight = 100m });
+            uow.Rooms.Add(new Room { HotelId = Hotel, Name = "Сімейний", Capacity = 4, Quantity = 1, PricePerNight = 180m });
 
-            uow.Trips.Add(new TransportTrip
+            uow.Trips.Add(new Trip
             {
                 Type = TransportType.Plane, FromCity = "Київ", ToCity = "Анталія",
                 DepartureAt = Today.AddDays(10).AddHours(9), ArrivalAt = Today.AddDays(10).AddHours(12),
-                Price = 150m, SeatsTotal = 3
+                Price = 150m, Capacity = 3
             });
             return uow;
         }

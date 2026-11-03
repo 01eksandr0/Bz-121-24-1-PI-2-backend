@@ -26,14 +26,14 @@ namespace TravelAgency.BLL.Tests.Fakes
                 h.Region = WithCountry(Regions.Raw(h.RegionId));
                 h.Rooms = Rooms.RawAll().Where(r => r.HotelId == h.Id).ToList();
             });
-            Rooms = Register<HotelRoom>(r => r.Hotel = Hotels.Raw(r.HotelId));
+            Rooms = Register<Room>(r => r.Hotel = Hotels.Raw(r.HotelId));
             RoomBookings = Register<RoomBooking>(b =>
             {
                 b.Room = Rooms.Raw(b.RoomId);
                 b.Room.Hotel = Hotels.Raw(b.Room.HotelId);
                 b.User = Users.Raw(b.UserId);
             });
-            Trips = Register<TransportTrip>(t => { });
+            Trips = Register<Trip>(t => { });
             TicketBookings = Register<TicketBooking>(b => { b.Trip = Trips.Raw(b.TripId); b.User = Users.Raw(b.UserId); });
         }
 
@@ -49,11 +49,11 @@ namespace TravelAgency.BLL.Tests.Fakes
 
         public InMemoryRepository<Hotel> Hotels { get; }
 
-        public InMemoryRepository<HotelRoom> Rooms { get; }
+        public InMemoryRepository<Room> Rooms { get; }
 
         public InMemoryRepository<RoomBooking> RoomBookings { get; }
 
-        public InMemoryRepository<TransportTrip> Trips { get; }
+        public InMemoryRepository<Trip> Trips { get; }
 
         public InMemoryRepository<TicketBooking> TicketBookings { get; }
 
@@ -69,8 +69,10 @@ namespace TravelAgency.BLL.Tests.Fakes
             SaveCount++;
         }
 
-        public void Dispose()
+        /// <summary>У пам'яті паралельних запитів немає - просто виконуємо дію.</summary>
+        public void ExecuteInTransaction(Action action)
         {
+            action();
         }
 
         private Region WithCountry(Region region)

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TravelAgency.BLL.Models;
 using TravelAgency.BLL.Models.Bookings;
-using TravelAgency.BLL.Models.Geography;
+using TravelAgency.BLL.Models.Countries;
 using TravelAgency.BLL.Models.Hotels;
 using TravelAgency.BLL.Models.Tours;
-using TravelAgency.BLL.Models.Transport;
+using TravelAgency.BLL.Models.Trips;
 using TravelAgency.BLL.Models.Users;
 using TravelAgency.WebAPI.Models.Requests;
 using TravelAgency.WebAPI.Models.Responses;
@@ -72,6 +72,7 @@ namespace TravelAgency.WebAPI.Mapping
         public static RoomBookingResponse ToResponse(this RoomBookingModel booking) => new RoomBookingResponse
         {
             Id = booking.Id,
+            RoomId = booking.RoomId,
             HotelName = booking.HotelName,
             RoomName = booking.RoomName,
             UserName = booking.UserName,
@@ -98,9 +99,9 @@ namespace TravelAgency.WebAPI.Mapping
             CreatedAt = booking.CreatedAt
         };
 
-        public static HotelRoomResponse ToResponse(this HotelRoomModel room) => new HotelRoomResponse
+        public static RoomResponse ToResponse(this RoomModel room) => new RoomResponse
         {
-            Id = room.Id, Name = room.Name, Capacity = room.Capacity, PricePerNight = room.PricePerNight
+            Id = room.Id, Name = room.Name, Capacity = room.Capacity, Quantity = room.Quantity, PricePerNight = room.PricePerNight
         };
 
         public static HotelResponse ToResponse(this HotelModel hotel) => new HotelResponse
@@ -125,8 +126,8 @@ namespace TravelAgency.WebAPI.Mapping
             DepartureAt = trip.DepartureAt,
             ArrivalAt = trip.ArrivalAt,
             Price = trip.Price,
-            SeatsTotal = trip.SeatsTotal,
-            FreeSeats = trip.FreeSeats
+            Capacity = trip.Capacity,
+            FreePlaces = trip.FreePlaces
         };
 
         public static List<TResponse> ToResponses<TModel, TResponse>(this IEnumerable<TModel> models, Func<TModel, TResponse> map)
@@ -134,12 +135,12 @@ namespace TravelAgency.WebAPI.Mapping
             return models.Select(map).ToList();
         }
 
-        public static RegisterModel ToModel(this RegisterRequest request) => new RegisterModel
+        public static RegisterInputModel ToModel(this RegisterRequest request) => new RegisterInputModel
         {
             FullName = request.FullName, Email = request.Email, Password = request.Password
         };
 
-        public static LoginModel ToModel(this LoginRequest request) => new LoginModel
+        public static LoginInputModel ToModel(this LoginRequest request) => new LoginInputModel
         {
             Email = request.Email, Password = request.Password
         };
@@ -148,7 +149,7 @@ namespace TravelAgency.WebAPI.Mapping
         {
             Title = request.Title,
             Description = request.Description,
-            Type = ParseEnum<TourKind>(request.Type),
+            Type = ParseEnum<TourType>(request.Type),
             RegionId = request.RegionId.Value,
             StartDate = request.StartDate.Value,
             EndDate = request.EndDate.Value,
@@ -157,12 +158,12 @@ namespace TravelAgency.WebAPI.Mapping
             Capacity = request.Capacity.Value
         };
 
-        public static TourFilterModel ToModel(this TourSearchQuery query) => new TourFilterModel
+        public static TourSearchModel ToModel(this TourSearchQuery query) => new TourSearchModel
         {
             Text = query.Text,
             CountryId = query.CountryId,
             RegionId = query.RegionId,
-            Type = string.IsNullOrEmpty(query.Type) ? (TourKind?)null : ParseEnum<TourKind>(query.Type),
+            Type = string.IsNullOrEmpty(query.Type) ? (TourType?)null : ParseEnum<TourType>(query.Type),
             HotOnly = query.HotOnly,
             MinPrice = query.MinPrice,
             MaxPrice = query.MaxPrice,
@@ -172,17 +173,17 @@ namespace TravelAgency.WebAPI.Mapping
             SortBy = string.IsNullOrEmpty(query.SortBy) ? TourSortOrder.StartDate : ParseEnum<TourSortOrder>(query.SortBy)
         };
 
-        public static BookTourModel ToModel(this BookTourRequest request) => new BookTourModel
+        public static TourBookingInputModel ToModel(this TourBookingRequest request) => new TourBookingInputModel
         {
             TourId = request.TourId.Value, Persons = request.Persons.Value
         };
 
-        public static BookRoomModel ToModel(this BookRoomRequest request) => new BookRoomModel
+        public static RoomBookingInputModel ToModel(this RoomBookingRequest request) => new RoomBookingInputModel
         {
             RoomId = request.RoomId.Value, CheckIn = request.CheckIn.Value, CheckOut = request.CheckOut.Value, Guests = request.Guests.Value
         };
 
-        public static BookTicketModel ToModel(this BookTicketRequest request) => new BookTicketModel
+        public static TicketBookingInputModel ToModel(this TicketBookingRequest request) => new TicketBookingInputModel
         {
             TripId = request.TripId.Value, Seats = request.Seats.Value
         };
@@ -192,36 +193,36 @@ namespace TravelAgency.WebAPI.Mapping
             Name = request.Name, Description = request.Description, Stars = request.Stars.Value, RegionId = request.RegionId.Value
         };
 
-        public static HotelRoomInputModel ToModel(this HotelRoomRequest request) => new HotelRoomInputModel
+        public static RoomInputModel ToModel(this RoomRequest request) => new RoomInputModel
         {
-            Name = request.Name, Capacity = request.Capacity.Value, PricePerNight = request.PricePerNight.Value
+            Name = request.Name, Capacity = request.Capacity.Value, Quantity = request.Quantity.Value, PricePerNight = request.PricePerNight.Value
         };
 
-        public static HotelFilterModel ToModel(this HotelSearchQuery query) => new HotelFilterModel
+        public static HotelSearchModel ToModel(this HotelSearchQuery query) => new HotelSearchModel
         {
             CountryId = query.CountryId, RegionId = query.RegionId, MinStars = query.MinStars, Text = query.Text
         };
 
         public static TripInputModel ToModel(this TripRequest request) => new TripInputModel
         {
-            Type = ParseEnum<TransportKind>(request.Type),
+            Type = ParseEnum<TransportType>(request.Type),
             FromCity = request.FromCity,
             ToCity = request.ToCity,
             DepartureAt = request.DepartureAt.Value,
             ArrivalAt = request.ArrivalAt.Value,
             Price = request.Price.Value,
-            SeatsTotal = request.SeatsTotal.Value
+            Capacity = request.Capacity.Value
         };
 
-        public static TripFilterModel ToModel(this TripSearchQuery query) => new TripFilterModel
+        public static TripSearchModel ToModel(this TripSearchQuery query) => new TripSearchModel
         {
-            Type = string.IsNullOrEmpty(query.Type) ? (TransportKind?)null : ParseEnum<TransportKind>(query.Type),
+            Type = string.IsNullOrEmpty(query.Type) ? (TransportType?)null : ParseEnum<TransportType>(query.Type),
             FromCity = query.FromCity,
             ToCity = query.ToCity,
             Date = query.Date
         };
 
-        public static Role ToRole(this ChangeRoleRequest request) => ParseEnum<Role>(request.Role);
+        public static UserRole ToRole(this ChangeRoleRequest request) => ParseEnum<UserRole>(request.Role);
 
         /// <summary>Рядок уже перевірено атрибутом [EnumDataType], тому тут лише перетворення.</summary>
         private static TEnum ParseEnum<TEnum>(string value) where TEnum : struct

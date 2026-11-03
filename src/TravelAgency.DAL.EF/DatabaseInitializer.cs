@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace TravelAgency.DAL.EF
 {
     /// <summary>Налаштування підключення до MS SQL і створення бази з тестовими даними.</summary>
-    public static class DatabaseInitializer
+    internal static class DatabaseInitializer
     {
         public static DbContextOptions<TravelAgencyContext> CreateOptions(string connectionString)
         {

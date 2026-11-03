@@ -1,11 +1,16 @@
+using TravelAgency.BLL.Models;
+
 namespace TravelAgency.WebAPI.Security
 {
-    /// <summary>Назви ролей у токені (збігаються з назвами переліку Role у BLL).</summary>
+    /// <summary>
+    /// Ролі для [Authorize(Roles = ...)] - це назви переліку UserRole, тому розійтися вони не можуть.
+    /// Доступ до дії за роллю перевіряє PL (роль у токені звіряється з БД на кожному запиті - TokenRoleValidator),
+    /// а правила щодо конкретного об'єкта (чиє бронювання, власна роль) - BLL.
+    /// </summary>
     internal static class ApiRoles
     {
-        public const string Customer = "Customer";
-        public const string Manager = "Manager";
-        public const string Admin = "Admin";
+        public const string Manager = nameof(UserRole.Manager);
+        public const string Admin = nameof(UserRole.Admin);
 
         /// <summary>Персонал агенції: менеджер і адміністратор.</summary>
         public const string Staff = Manager + "," + Admin;

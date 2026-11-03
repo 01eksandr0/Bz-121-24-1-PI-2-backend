@@ -33,7 +33,7 @@ namespace TravelAgency.BLL.Tests.Fakes
 
         public IReadOnlyList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes) => Items().ToList();
 
-        public IReadOnlyList<TEntity> Find(Expression<Func<TEntity, bool>> predicate,
+        public IReadOnlyList<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, object>>[] includes) => Items().Where(predicate.Compile()).ToList();
 
         public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate,

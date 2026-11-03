@@ -1,6 +1,6 @@
 namespace TravelAgency.BLL.Security
 {
-    public interface IPasswordHasher
+    internal interface IPasswordHasher
     {
         string Hash(string password);
 

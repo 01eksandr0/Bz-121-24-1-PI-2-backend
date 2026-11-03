@@ -8,7 +8,7 @@ namespace TravelAgency.DAL.Abstractions.Entities
 
         public int TripId { get; set; }
 
-        public TransportTrip Trip { get; set; }
+        public Trip Trip { get; set; }
 
         public int UserId { get; set; }
 

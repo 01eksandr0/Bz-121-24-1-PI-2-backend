@@ -18,4 +18,9 @@
     <ProjectReference Include="..\TravelAgency.DAL.Abstractions\TravelAgency.DAL.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- EfUnitOfWork і DatabaseInitializer реєструє/викликає лише Infrastructure -->
+    <InternalsVisibleTo Include="TravelAgency.Infrastructure" />
+  </ItemGroup>
+
 </Project>
